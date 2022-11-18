@@ -1,13 +1,14 @@
 import Navbar from "./components/Navbar"
 import Login from "./components/Login"
+import Register from "./components/Register"
 
 function App() {
 
   return (
     <div className="App">
-      <div className="h-screen flex flex-col ">
+      <div>
         <Navbar />
-        <div className="flex h-100">
+        <div>
           <Login />
         </div>
 
