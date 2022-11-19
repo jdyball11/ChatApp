@@ -9,7 +9,7 @@ function App() {
       <div>
         {/* <Navbar /> */}
         <div>
-          <Login />
+          <Register />
         </div>
 
       </div>
