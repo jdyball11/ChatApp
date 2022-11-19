@@ -9,11 +9,13 @@ function App() {
   return (
     <div className="App">
       <div>
+
         <Navbar />
         <Routes>
           <Route path='/chatapp/login' element={<Login />} />
           <Route path='/chatapp/home' element={<Chat />} />
         </Routes>
+
 
       </div>
 
