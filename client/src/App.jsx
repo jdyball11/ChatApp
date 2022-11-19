@@ -1,6 +1,8 @@
 import Navbar from "./components/Navbar"
 import Login from "./components/Login"
 import Register from "./components/Register"
+import { Routes, Route } from 'react-router-dom'
+import Chat from "./components/Chat"
 
 function App() {
 
@@ -8,9 +10,10 @@ function App() {
     <div className="App">
       <div>
         <Navbar />
-        <div>
-          <Login />
-        </div>
+        <Routes>
+          <Route path='/chatapp/login' element={<Login />} />
+          <Route path='/chatapp/home' element={<Chat />} />
+        </Routes>
 
       </div>
 
