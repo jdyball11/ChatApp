@@ -10,11 +10,19 @@ import { useNavigate } from "react-router-dom";
 
 const Register = () => {
     const [error, setError] = useState(false)
+    const [passwordError,setPasswordError] = useState('') // Password validation
     const [registerFields, setRegisterFields] = useState('')
     const navigate = useNavigate()
 
     const handleRegisterChange = (event) => {
         const { name, value } = event.target
+
+        // Password validation
+        if (name === 'password' && value.length < 6) {
+            setPasswordError('Password should be at least 6 characters.')
+        } else {
+            setPasswordError('')
+        }
         setRegisterFields({
             ...registerFields,
             [name]: value
@@ -59,8 +67,8 @@ const Register = () => {
                             email,
                             photoURL: downloadURL,
                         });
-                        navigate('/chatapp/home')
                     });
+                    navigate('/chatapp/home')
                 }
             );
             
@@ -113,6 +121,11 @@ const Register = () => {
                             className="border-b p-2 mt-1 bg-lightWhite text-materialBlack" />
                         <input type="password" name="password" value={registerFields.password} onChange={handleRegisterChange} placeholder=" password *"
                             className="border-b p-2 mt-1 bg-lightWhite text-materialBlack" />
+                        {/* Password validation */}
+                        {passwordError && 
+                            <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
+                            {passwordError}
+                            </span>}
                         {/* <input type="text" name="confirmPassword" value={registerFields.confirmPassword} onChange={handleRegisterChange} placeholder=" confirm password *"
                                 className="border-b p-2 mt-1 bg-lightWhite text-materialBlack" /> */}
                         <input type="file" name="profilePic" id="file" className="hidden" />
