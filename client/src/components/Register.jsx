@@ -6,7 +6,7 @@ import { FaRocketchat } from "react-icons/fa"
 import { MdOutlineAddPhotoAlternate } from "react-icons/md"
 import { doc, setDoc } from 'firebase/firestore'
 import { db } from '../Firebase-config'
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Register = () => {
     const [error, setError] = useState(false)
@@ -128,7 +128,7 @@ const Register = () => {
                             justify-center transition-all bg-dcBlue text-lightWhite" />
 
                             <div className="flex gap-1 justify-center mt-3">
-                                <a href='' className="underline text-dcBlue">Already have an account?</a>
+                                <Link to="/chatapp/login" className="underline text-dcBlue">Already have an account?</Link>
                             </div>
                         </label>
                         {error && <span>Registration unsuccessful</span>}
