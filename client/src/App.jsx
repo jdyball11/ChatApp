@@ -12,6 +12,7 @@ function App() {
 
         {/* <Navbar /> */}
         <Routes>
+          <Route path='/chatapp/register' element={<Register />} />
           <Route path='/chatapp/login' element={<Login />} />
           <Route path='/chatapp/home' element={<Chat />} />
         </Routes>
