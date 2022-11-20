@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../Firebase-config"
+import { getAuth } from "firebase/auth"
 import { FaRocketchat } from "react-icons/fa"
 import { useNavigate } from "react-router-dom"
 
@@ -31,16 +32,19 @@ const Login = () => {
         try {
             await signInWithEmailAndPassword(auth, email, password)
             // User logged in
-            navigate('/home')
+            let user = getAuth().currentUser;
+
+            // navigate('/chatapp/home')
                 
 
         } catch (error) {
             setError(true)
+            console.log('Sign In Error:', error.message)
         }
 
 
     }
-
+    
 
 
     return (

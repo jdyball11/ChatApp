@@ -1,13 +1,17 @@
 import { useState } from "react"
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, updateProfile } from "firebase/auth";
 import { auth, storage } from "../Firebase-config"
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { FaRocketchat } from "react-icons/fa"
 import { MdOutlineAddPhotoAlternate } from "react-icons/md"
+import { doc, setDoc } from 'firebase/firestore'
+import { db } from '../Firebase-config'
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
     const [error, setError] = useState(false)
     const [registerFields, setRegisterFields] = useState('')
+    const navigate = useNavigate()
 
     const handleRegisterChange = (event) => {
         const { name, value } = event.target
@@ -15,7 +19,6 @@ const Register = () => {
             ...registerFields,
             [name]: value
         })
-        console.log(registerFields)
     }
 
     const handleRegisterSubmit = async (event) => {
@@ -27,7 +30,6 @@ const Register = () => {
         try {
             const res = await createUserWithEmailAndPassword(auth, email, password)
             // User signed up (created user)
-
             const storageRef = ref(storage, displayName);
 
             const uploadTask = uploadBytesResumable(storageRef, file);
@@ -49,12 +51,23 @@ const Register = () => {
                         await updateProfile(res.user, {
                             displayName,
                             photoURL:downloadURL,
-                        })
+                        });
+                        // Add a new document in collection "users"    
+                        await setDoc(doc(db, "users", res.user.uid), {
+                            uid: res.user.uid,
+                            displayName,
+                            email,
+                            photoURL: downloadURL,
+                        });
+                        navigate('/chatapp/home')
                     });
                 }
             );
+            
+
         } catch (error) {
             setError(true)
+            console.log('unsuccessful. Error Message:', error.message)
         }
 
 
