@@ -26,6 +26,7 @@ const Register = () => {
         const profilePic = event.target[3].files[0]
         try {
             const res = await createUserWithEmailAndPassword(auth, email, password)
+            // User signed up (created user)
 
             const storageRef = ref(storage, displayName);
 
@@ -45,7 +46,10 @@ const Register = () => {
                     // Handle successful uploads on complete
                     // For instance, get the download URL: https://firebasestorage.googleapis.com/...
                     getDownloadURL(uploadTask.snapshot.ref).then( async (downloadURL) => {
-                        await updateProfile(res.user, {})
+                        await updateProfile(res.user, {
+                            displayName,
+                            photoURL:downloadURL,
+                        })
                     });
                 }
             );

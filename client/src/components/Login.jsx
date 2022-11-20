@@ -1,5 +1,8 @@
 import { useState } from "react"
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../Firebase-config"
 import { FaRocketchat } from "react-icons/fa"
+import { useNavigate } from "react-router-dom"
 
 const Login = () => {
     const initialState = {
@@ -8,6 +11,8 @@ const Login = () => {
     }
 
     const [loginFields, setLoginFields] = useState(initialState)
+    const [error, setError] = useState(false)
+    const navigate = useNavigate()
 
     const handleLoginChange = (event) => {
         console.log(event.target)
@@ -18,10 +23,22 @@ const Login = () => {
         })
     }
 
-    const handleLoginSubmit = (event) => {
+    const handleLoginSubmit = async (event) => {
         event.preventDefault()
         const email = event.target[0].value
         const password = event.target[1].value
+
+        try {
+            await signInWithEmailAndPassword(auth, email, password)
+            // User logged in
+            navigate('/home')
+                
+
+        } catch (error) {
+            setError(true)
+        }
+
+
     }
 
 
