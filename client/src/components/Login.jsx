@@ -3,7 +3,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../Firebase-config"
 import { getAuth } from "firebase/auth"
 import { FaRocketchat } from "react-icons/fa"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 
 const Login = () => {
     const initialState = {
@@ -79,7 +79,7 @@ const Login = () => {
                             <input type="submit" value="LOGIN" className="flex p-2 rounded-md 
                             justify-center transition-all bg-dcBlue text-lightWhite hover:bg-white hover:text-black" />
                             <div className="flex gap-1 mt-3 justify-center text-gray-500">
-                                New to us? <a href='' className="underline text-dcBlue"> Register</a>
+                                New to us? <Link to="/chatapp/register" className="underline text-dcBlue">Register</Link>
                             </div>
 
                         </label>
