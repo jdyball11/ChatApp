@@ -1,5 +1,7 @@
 import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth"
 import { getFirestore } from "@firebase/firestore"
+import { getStorage } from "firebase/storage";
 
 
 const firebaseConfig = {
@@ -10,12 +12,13 @@ const firebaseConfig = {
     messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
     appId: import.meta.env.VITE_APP_ID
   };
+console.log(firebaseConfig.apiKey)
 
-  const app = initializeApp(firebaseConfig);
 
-  export const db = getFirestore(app, {
-    experimentalForceLongPolling: true,
-    useFetchStreams: false,
-});
+
+export const app = initializeApp(firebaseConfig);
+export const auth = getAuth()
+export const storage = getStorage();
+export const db = getFirestore();
 
 

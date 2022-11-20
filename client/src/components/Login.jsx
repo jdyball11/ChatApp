@@ -1,5 +1,9 @@
 import { useState } from "react"
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../Firebase-config"
+import { getAuth } from "firebase/auth"
 import { FaRocketchat } from "react-icons/fa"
+import { useNavigate } from "react-router-dom"
 
 const Login = () => {
     const initialState = {
@@ -8,6 +12,8 @@ const Login = () => {
     }
 
     const [loginFields, setLoginFields] = useState(initialState)
+    const [error, setError] = useState(false)
+    const navigate = useNavigate()
 
     const handleLoginChange = (event) => {
         console.log(event.target)
@@ -18,10 +24,27 @@ const Login = () => {
         })
     }
 
-    const handleLoginSubmit = (event) => {
+    const handleLoginSubmit = async (event) => {
         event.preventDefault()
-    }
+        const email = event.target[0].value
+        const password = event.target[1].value
 
+        try {
+            await signInWithEmailAndPassword(auth, email, password)
+            // User logged in
+            let user = getAuth().currentUser;
+
+            // navigate('/chatapp/home')
+                
+
+        } catch (error) {
+            setError(true)
+            console.log('Sign In Error:', error.message)
+        }
+
+
+    }
+    
 
 
     return (
@@ -42,23 +65,15 @@ const Login = () => {
                         </div>
                     </div>
 
-                    <form className="flex flex-col gap-6 w-60">
-                        <label htmlFor="username" className="flex flex-col">
-                            {/* <div className="text-dcBlue">
-                                Username
-                                <span className="text-red-500" > *</span>
-                            </div> */}
-                            <input type="text" name="username" value={loginFields.username} onChange={handleLoginChange} placeholder=" username *"
-                                className="border-b p-2 bg-lightWhite text-materialBlack" />
-                        </label>
-                        <label htmlFor="password" className="flex flex-col">
-                            {/* <div className="text-dcBlue">
-                                Password
-                                <span className="text-red-500"> *</span>
-                            </div> */}
-                            <input type="text" name="password" value={loginFields.password} onChange={handleLoginChange} placeholder=" password *"
-                                className="border-b p-2 bg-lightWhite text-materialBlack" />
-                        </label>
+                    <form className="flex flex-col gap-6 w-60" onSubmit={handleLoginSubmit}>
+
+                        <input type="text" name="username" value={loginFields.username} onChange={handleLoginChange} placeholder=" username *"
+                            className="border-b p-2 bg-lightWhite text-materialBlack" />
+
+
+                        <input type="password" name="password" value={loginFields.password} onChange={handleLoginChange} placeholder=" password *"
+                            className="border-b p-2 bg-lightWhite text-materialBlack" />
+
                         {/* Create account button */}
                         <label className="flex flex-col mt-3">
                             <input type="submit" value="LOGIN" className="flex p-2 rounded-md 
