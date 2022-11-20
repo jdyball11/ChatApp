@@ -1,9 +1,12 @@
 import { useState } from "react"
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../Firebase-config"
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth, storage } from "../Firebase-config"
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { FaRocketchat } from "react-icons/fa"
+import { MdOutlineAddPhotoAlternate } from "react-icons/md"
 
 const Register = () => {
+    const [error, setError] = useState(false)
     const [registerFields, setRegisterFields] = useState('')
 
     const handleRegisterChange = (event) => {
@@ -15,29 +18,58 @@ const Register = () => {
         console.log(registerFields)
     }
 
-    const handleRegisterSubmit = (event) => {
+    const handleRegisterSubmit = async (event) => {
         event.preventDefault()
         const displayName = event.target[0].value
         const email = event.target[1].value
         const password = event.target[2].value
+        const profilePic = event.target[3].files[0]
+        try {
+            const res = await createUserWithEmailAndPassword(auth, email, password)
+
+            const storageRef = ref(storage, displayName);
+
+            const uploadTask = uploadBytesResumable(storageRef, file);
+
+            // Register three observers:
+            // 1. 'state_changed' observer, called any time the state changes
+            // 2. Error observer, called on failure
+            // 3. Completion observer, called on successful completion
+            uploadTask.on(
+                
+                (error) => {
+                    // Handle unsuccessful uploads
+                    setError(true)
+                },
+                () => {
+                    // Handle successful uploads on complete
+                    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+                    getDownloadURL(uploadTask.snapshot.ref).then( async (downloadURL) => {
+                        await updateProfile(res.user, {})
+                    });
+                }
+            );
+        } catch (error) {
+            setError(true)
+        }
 
 
-        createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            // Signed in 
-            const user = userCredential.user;
+        // .then((userCredential) => {
+        //     // Signed in 
+        //     const user = userCredential.user;
 
-            console.log(user)
-            // ...
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            // ..
-        });
+        //     console.log(user)
+        //     // ...
+        // })
+        // .catch((error) => {
+        //     const errorCode = error.code;
+        //     const errorMessage = error.message;
+        //     console.log(error.message)
+        //     // ..
+        // });
     }
 
-    
+
 
     return (
         <section id="register">
@@ -66,6 +98,12 @@ const Register = () => {
                             className="border-b p-2 mt-1 bg-lightWhite text-materialBlack" />
                         {/* <input type="text" name="confirmPassword" value={registerFields.confirmPassword} onChange={handleRegisterChange} placeholder=" confirm password *"
                                 className="border-b p-2 mt-1 bg-lightWhite text-materialBlack" /> */}
+                        <input type="file" name="profilePic" id="file" className="hidden" />
+                        <label htmlFor="file" className="text-dcBlue flex flex-row gap-3 items-center justify-center">
+                            <MdOutlineAddPhotoAlternate className="text-4xl" />
+                            <span className="translate-y-0.5">Add a profile picture</span>
+                        </label>
+
 
                         {/* Create account button */}
                         <label className="flex flex-col">
@@ -76,6 +114,7 @@ const Register = () => {
                                 <a href='' className="underline text-dcBlue">Already have an account?</a>
                             </div>
                         </label>
+                        {error && <span>Registration unsuccessful</span>}
                     </form>
 
                 </div>
