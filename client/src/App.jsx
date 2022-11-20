@@ -3,7 +3,7 @@ import Login from "./components/Login"
 import Register from "./components/Register"
 import { Routes, Route } from 'react-router-dom'
 import Chat from "./components/Chat"
-import SetupProfile from "./components/SetupProfile"
+import EditProfile from "./components/EditProfile"
 
 function App() {
 
@@ -16,7 +16,7 @@ function App() {
           <Route path='/chatapp/register' element={<Register />} />
           <Route path='/chatapp/login' element={<Login />} />
           <Route path='/chatapp/home' element={<Chat />} />
-          <Route path='/chatapp/setupprofile' element={<SetupProfile />} />
+          <Route path='/chatapp/editProfile' element={<EditProfile />} />
         </Routes>
 
 
