@@ -67,8 +67,8 @@ const Register = () => {
                             email,
                             photoURL: downloadURL,
                         });
-                        navigate('/chatapp/home')
                     });
+                    navigate('/chatapp/home')
                 }
             );
             
