@@ -37,8 +37,9 @@ const Register = () => {
         const file = event.target[3].files[0]
         try {
             const res = await createUserWithEmailAndPassword(auth, email, password)
+            console.log(res.user.uid);
             // User signed up (created user)
-            const storageRef = ref(storage, displayName);
+            const storageRef = ref(storage, res.user.uid);
 
             const uploadTask = uploadBytesResumable(storageRef, file);
 
