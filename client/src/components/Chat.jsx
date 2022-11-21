@@ -16,7 +16,8 @@ const Chat = () => {
                 <div className='text-dcBlue'>
                     {data.user?.displayName}
                 </div>
-                {/* <Messages /> */}
+                <Messages />
+
             </div>
             <Input />
         </div>

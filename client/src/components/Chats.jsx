@@ -24,9 +24,7 @@ const Chats = () => {
         currentUser.uid && getChats()
     }, [currentUser.uid])
 
-    // Object.entries(obj) return the key, value pair of the object as key: value in an array
-    console.log(Object.entries(chats))
-
+    
     const handleSelect = (u) => {
         dispatch({type:ACTIONS.CHANGE_USER, payload: u })
     }
@@ -34,8 +32,8 @@ const Chats = () => {
     return (
         // chats
         <div>
-            {Object.entries(chats)?.map((chat) => {
-                console.log(chat)
+            {/* Object.entries(obj) return the key, value pair of the object as key: value in an array */}
+            {Object.entries(chats)?.sort((a,b)=>b[1].date - a[1].date).map((chat) => {
                 return (
                     // individual chat
                     <div key={chat[0]} onClick={()=>handleSelect(chat[1].userInfo)}
@@ -44,7 +42,7 @@ const Chats = () => {
                         className="w-16 aspect-square object-cover rounded-full"  />
                         <div className='text-dcBlue'>
                             <div className='text-2xl font-bold'> {chat[1].userInfo.displayName}</div>
-                            <p>{chat[1].userInfo.lastMessage?.text}</p>
+                            <p>{chat[1].lastMessage?.text}</p>
                         </div>
 
                     </div>

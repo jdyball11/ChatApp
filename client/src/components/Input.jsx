@@ -19,6 +19,7 @@ const Input = () => {
 
     const handleSend = async () => {
         if(img){
+            // for storing the image
             const storageRef = ref(storage, uuidv4())
             const uploadTask = uploadBytesResumable(storageRef, img)
             uploadTask.on(                
