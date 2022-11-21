@@ -3,7 +3,7 @@ import { FaRocketchat } from 'react-icons/fa'
 import { MdLogout } from 'react-icons/md'
 import { auth } from '../Firebase-config'
 import { useContext } from 'react'
-import { AuthContext } from '../AuthContext'
+import { AuthContext } from '../contexts/AuthContext'
 
 
 const Navbar = () => {
