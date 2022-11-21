@@ -8,7 +8,7 @@ const Message = ({ message }) => {
     return (
         // message owner
         <div className='border-dcBlue flex justify-end'>
-            {/* message info */}
+            {/* message body */}
             <div>
                 <p>{message.text}</p>
                 {message.img && <img src={message.img} />}

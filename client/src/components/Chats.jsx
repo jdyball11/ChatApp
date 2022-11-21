@@ -33,7 +33,8 @@ const Chats = () => {
         // chats
         <div>
             {/* Object.entries(obj) return the key, value pair of the object as key: value in an array */}
-            {Object.entries(chats)?.sort((a, b) => b[1].date - a[1].date).map((chat) => (
+            {/* also, need to make sure chats is available before running the sort and map */}
+            {chats && Object.entries(chats)?.sort((a, b) => b[1].date - a[1].date).map((chat) => (
                 // individual chat
                 <div key={chat[0]} onClick={() => handleSelect(chat[1].userInfo)}
                     className="flex items-center p-3 gap-3">

@@ -13,13 +13,16 @@ const Messages = () => {
     console.log(data)
 
     useEffect(() => {
-        const unsub = onSnapshot(doc(db, "chats", data.chatId), (doc) => {
-            // setMessages with doc.data() if a chat alreayd exists
-            doc.exists() && setMessages(doc.data().messages)
-        });
-        return () => {
-            unsub();
+        const getMessages = () => {
+            const unsub = onSnapshot(doc(db, "chats", data.chatId), (doc) => {
+                // setMessages with doc.data() if a chat alreayd exists
+                doc.exists() && setMessages(doc.data().messages)
+            });
+            return () => {
+                unsub();
+            }
         };
+        data.chatId && getMessages()
     }, [data.chatId]);
 
     console.log(messages)
@@ -28,7 +31,7 @@ const Messages = () => {
         // the messages
         <div>
             {messages.map((message) => (
-                <Message message={message} key={message.id}/>
+                <Message message={message} key={message.id} />
             ))}
         </div>
     )
