@@ -9,7 +9,8 @@ import { AuthContext } from "./AuthContext"
 
 function App() {
 
-  const { currentUser } = useContext(AuthContext)
+  const { currentUser }  = useContext(AuthContext)
+
 
   // redirects user to login page if not logged in
   const ProtectedRoute = ({ children }) => {
