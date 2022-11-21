@@ -87,9 +87,8 @@ const EditProfile = () => {
         } else {
             file = event.target[0].files[0]
             console.log("Image file: ", event.target[0].files[0])
-            console.log(file);
             try {
-                const storageRef = ref(storage, displayName);
+                const storageRef = ref(storage, currentUserProfile.uid);
                 const uploadTask = uploadBytesResumable(storageRef, file);
     
                 uploadTask.on(
