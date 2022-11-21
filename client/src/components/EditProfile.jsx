@@ -20,11 +20,9 @@ const EditProfile = () => {
     const [chars, setChars] = useState(150)
     
     const navigate = useNavigate()
-    // const currentUserProfile = auth.currentUser // get logined-in user
-    const currentUserProfile = AuthContext.currentUser
+    const currentUserProfile = auth.currentUser // get logined-in user
     let currentUserColRef  // get logined-in user document in users collection
 
-    
     useEffect(() => {
         const testing = async () =>{
             if (currentUserProfile !== null) {
@@ -47,6 +45,7 @@ const EditProfile = () => {
     }, [currentUserProfile]) // useEffect will run when currentUser changes or remount
 
 
+
     const handleEditChange = (event) => {
         const { name, value } = event.target
 
@@ -58,6 +57,10 @@ const EditProfile = () => {
             ...editFields,
             [name]: value
         })
+    }
+
+    const handleCancelEdit = () => {
+        navigate('/chatapp/home')
     }
 
     const handleEditSubmit = async (event) => {
@@ -159,7 +162,11 @@ const EditProfile = () => {
                             value="EDIT PROFILE"  
                         />
                     </form>
-
+                    <button
+                        className="flex rounded-md p-2 justify-center transition-all bg-dcBlue text-lightWhite"
+                        onClick={handleCancelEdit}
+                    >
+                        CANCEL</button>
                 </div>
         </div>
     )
