@@ -1,21 +1,25 @@
-// import { onSnapshot, QuerySnapshot } from "@firebase/firestore";
-// import { useEffect, useState, useRef } from "react";
-// import { query, collection, orderBy } from 'firebase/firestore';
-// import { db } from '../Firebase-config'
-// import Messages from "./Messages";
-import Navbar from "./Navbar";
-import Search from "./Search";
-import {Link} from "react-router-dom"
+import React from 'react'
+import { ChatContext } from '../contexts/ChatContext'
+import { useContext } from 'react'
+import Messages from './Messages'
+import Input from './Input'
 
 const Chat = () => {
-
+    // access the data:state in ChatContext
+    const { data } = useContext(ChatContext)
+    console.log(data)
     return (
-        <div>
-            <Navbar />
-            <Search />
-            <Link to="/chatapp/profile" className="text-dcBlue">Edit Profile (For testing purpose)</Link>
+        <div className='border-2'>
+            {/* Chat Info */}
+            This is the chat window*
+            <div>
+                <div className='text-dcBlue'>
+                    {data.user?.displayName}
+                </div>
+                {/* <Messages /> */}
+            </div>
+            <Input />
         </div>
-
     )
 }
 

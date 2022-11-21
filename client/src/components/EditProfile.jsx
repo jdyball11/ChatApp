@@ -7,7 +7,12 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage, db, auth } from "../Firebase-config"
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 
-// import { AuthContext } from "../AuthContext";
+
+import { AuthContext } from "../contexts/AuthContext";
+
+// import { MdOutlineAddPhotoAlternate } from "react-icons/md"
+
+
 import Navbar from "./Navbar"
 
 const EditProfile = () => {
