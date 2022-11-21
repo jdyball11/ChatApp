@@ -17,9 +17,9 @@ const Chat = () => {
                     {data.user?.displayName}
                 </div>
                 <Messages />
-
+                <Input />
             </div>
-            <Input />
+            
         </div>
     )
 }
