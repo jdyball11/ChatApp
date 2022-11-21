@@ -4,6 +4,7 @@ import { MdLogout } from 'react-icons/md'
 import { auth } from '../Firebase-config'
 import { useContext } from 'react'
 import { AuthContext } from '../AuthContext'
+import {Link} from "react-router-dom"
 
 
 const Navbar = () => {
@@ -16,8 +17,10 @@ const Navbar = () => {
             </div>
             {/* User */}
             <div className='flex gap-2 items-center text-xl'>
-                <img src={currentUser.photoURL} alt="profile picture" className='w-9 h-9 object-cover'/>
-                <div>{currentUser.displayName}</div>
+                <Link to="/chatapp/userprofile" className="flex items-center">
+                    <img src={currentUser.photoURL} alt="profile picture" className='w-9 h-9 object-cover rounded-full'/>
+                    <span>{currentUser.displayName}</span>
+                </Link>
                 <MdLogout onClick={()=>signOut(auth)}/>
             </div>
            
