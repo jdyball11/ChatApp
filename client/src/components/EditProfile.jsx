@@ -68,46 +68,56 @@ const EditProfile = () => {
 
     const handleEditSubmit = async (event) => {
         event.preventDefault()
-        console.log("editFields photo URL: ", editFields.photoURL);
-        let file
-        if (!event.target[0].files[0]) {
-            file = editFields.photoURL
-        } else {
-            file = event.target[0].files[0]
-        }
-        console.log("Image file: ", event.target[0].files[0])
-        console.log(file);
         const displayName = event.target[1].value
         const about = event.target[3].value
-        try {
-            const storageRef = ref(storage, displayName);
-            const uploadTask = uploadBytesResumable(storageRef, file);
-
-            uploadTask.on(
-                (error) => {
-                    setError(true)
-                },
-                () => {
-                    getDownloadURL(uploadTask.snapshot.ref).then( async (downloadURL) => {
-                        console.log('File available at', downloadURL);
-                        await updateProfile(currentUserProfile, {
-                            displayName,
-                            photoURL:downloadURL
+        let file
+        // If no image select to upload
+        if (!event.target[0].files[0]) {
+            await updateProfile(currentUserProfile, {
+                displayName,
+            })
+            console.log("Profile Updated");
+            await updateDoc(currentUserColRef.current, {
+                "about": about,
+                "displayName": displayName,
+            })
+            console.log("Doc Updated");
+            navigate('/chatapp/home')
+        // if image selected to upload
+        } else {
+            file = event.target[0].files[0]
+            console.log("Image file: ", event.target[0].files[0])
+            console.log(file);
+            try {
+                const storageRef = ref(storage, displayName);
+                const uploadTask = uploadBytesResumable(storageRef, file);
+    
+                uploadTask.on(
+                    (error) => {
+                        setError(true)
+                    },
+                    () => {
+                        getDownloadURL(uploadTask.snapshot.ref).then( async (downloadURL) => {
+                            console.log('File available at', downloadURL);
+                            await updateProfile(currentUserProfile, {
+                                displayName,
+                                photoURL:downloadURL
+                            })
+                            console.log("Profile Updated");
+                            await updateDoc(currentUserColRef.current, {
+                                "about": about,
+                                "displayName": displayName,
+                                "photoURL": downloadURL
+                            })
+                            console.log("Doc Updated");
                         })
-                        console.log("Profile Updated");
-                        await updateDoc(currentUserColRef.current, {
-                            "about": about,
-                            "displayName": displayName,
-                            "photoURL": downloadURL
-                        })
-                        console.log("Doc Updated");
-                    })
-                    navigate('/chatapp/home')
-                }
-            )
-        } catch (error) {
-            setError(true)
-            console.log("Error Message: ", error.message);
+                        navigate('/chatapp/home')
+                    }
+                )
+            } catch (error) {
+                setError(true)
+                console.log("Error Message: ", error.message);
+            }
         }
     }
 
