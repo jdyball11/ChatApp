@@ -6,7 +6,6 @@ export const AuthContext = createContext()
 
 export const AuthContextProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState({})
-
     useEffect(() => {
         //authstatechanged will trigger the current user state once a connection with Firebase has been established.
         onAuthStateChanged(auth, (user) => {
