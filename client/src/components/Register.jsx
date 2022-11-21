@@ -64,9 +64,10 @@ const Register = () => {
                         // Add a new document in collection "users"    
                         await setDoc(doc(db, "users", res.user.uid), {
                             uid: res.user.uid,
-                            displayName,
-                            email,
+                            displayName: displayName,
+                            email: email,
                             photoURL: downloadURL,
+                            about: ""
                         });
                         // Add a new document in collection "userChats"
                         await setDoc(doc(db, "userChats", res.user.uid), {})
