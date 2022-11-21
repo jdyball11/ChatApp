@@ -3,17 +3,19 @@
 // import { query, collection, orderBy } from 'firebase/firestore';
 // import { db } from '../Firebase-config'
 // import Messages from "./Messages";
-import { Link } from 'react-router-dom'
+import Navbar from "./Navbar";
 import Search from "./Search";
 
 const Chat = () => {
-    
+
     return (
-    <>
-        <Search />
-        <Link to="/chatapp/editProfile">Edit Profile</Link>
-    </>
-        )
+        <div>
+            <Navbar />
+            <Search />
+            
+        </div>
+
+    )
 }
 
 export default Chat

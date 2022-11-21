@@ -1,7 +1,7 @@
 import Navbar from "./components/Navbar"
 import Login from "./components/Login"
 import Register from "./components/Register"
-import { Routes, Route, BrowserRouter } from 'react-router-dom'
+import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom'
 import { useContext } from "react"
 import Chat from "./components/Chat"
 import EditProfile from "./components/EditProfile"
@@ -10,23 +10,37 @@ import { AuthContext } from "./AuthContext"
 function App() {
 
   const { currentUser } = useContext(AuthContext)
-  console.log(currentUser)
+
+  // redirects user to login page if not logged in
+  const ProtectedRoute = ({ children }) => {
+    if (!currentUser) {
+      return <Navigate to="/chatapp/login" />
+    }
+    return children
+  }
 
   return (
     <div className="App">
       <div>
-
         {/* <Navbar /> */}
         <BrowserRouter>
           <Routes>
-            <Route path='/chatapp/register' element={<Register />} />
-            <Route path='/chatapp/login' element={<Login />} />
-            <Route path='/chatapp/home' element={<Chat />} />
-            <Route path='/chatapp/editProfile' element={<EditProfile />} />
+            <Route path='/chatapp/'>
+              {/* protected: home page with chats */}
+              <Route path='home' element={<ProtectedRoute>
+                <Chat />
+              </ProtectedRoute>} />
+              {/* protected: user profile page */}
+              <Route path='profile' element={<ProtectedRoute>
+                <EditProfile />
+              </ProtectedRoute>} />
+              {/* register page */}
+              <Route path='register' element={<Register />} />
+              {/* login page */}
+              <Route path='login' element={<Login />} />            
+            </Route>
           </Routes>
         </BrowserRouter>
-
-
       </div>
 
     </div>

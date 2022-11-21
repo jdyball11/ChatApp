@@ -32,10 +32,10 @@ const Login = () => {
         try {
             await signInWithEmailAndPassword(auth, email, password)
             // User logged in
-            let user = getAuth().currentUser;
+            
 
-            // navigate('/chatapp/home')
-                
+            navigate('/chatapp/home')
+            
 
         } catch (error) {
             setError(true)
