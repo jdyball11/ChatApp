@@ -5,21 +5,19 @@ import { createContext, useEffect, useState } from "react";
 export const AuthContext = createContext()
 
 export const AuthContextProvider = ({ children }) => {
-    const [user, SetUser] = useState({})
+    const [currentUser, setCurrentUser] = useState({})
 
     useEffect(() => {
         //authstatechanged will trigger the current user state once a connection with Firebase has been established.
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            SetUser(user)
-        })
-        return () => {
-            unsubscribe()
-        }
+        onAuthStateChanged(auth, (user) => {
+            setCurrentUser(user)
+            console.log(user)
+        });
     }, []);
     return (
-    //passing logged in user down to all routes(children) within authcontext provider
-    <AuthContext.Provider value={{user}}>
-        {children}
-    </AuthContext.Provider>  
+        //passing logged in user: currentUser down to all routes(children) within authcontext provider
+        <AuthContext.Provider value={{currentUser}}>
+            {children}
+        </AuthContext.Provider>
     )
 };

@@ -1,12 +1,12 @@
 import { useState } from "react"
-import { createUserWithEmailAndPassword, getAuth, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth, storage } from "../Firebase-config"
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { FaRocketchat } from "react-icons/fa"
-import { MdOutlineAddPhotoAlternate } from "react-icons/md"
 import { doc, setDoc } from 'firebase/firestore'
 import { db } from '../Firebase-config'
 import { useNavigate, Link } from "react-router-dom";
+import { FaRocketchat } from "react-icons/fa"
+import { MdOutlineAddPhotoAlternate } from "react-icons/md"
 
 const Register = () => {
     const [error, setError] = useState(false)
@@ -34,7 +34,7 @@ const Register = () => {
         const displayName = event.target[0].value
         const email = event.target[1].value
         const password = event.target[2].value
-        const profilePic = event.target[3].files[0]
+        const file = event.target[3].files[0]
         try {
             const res = await createUserWithEmailAndPassword(auth, email, password)
             // User signed up (created user)
@@ -56,6 +56,7 @@ const Register = () => {
                     // Handle successful uploads on complete
                     // For instance, get the download URL: https://firebasestorage.googleapis.com/...
                     getDownloadURL(uploadTask.snapshot.ref).then( async (downloadURL) => {
+
                         await updateProfile(res.user, {
                             displayName,
                             photoURL:downloadURL,
@@ -67,6 +68,9 @@ const Register = () => {
                             email,
                             photoURL: downloadURL,
                         });
+                        // Add a new document in collection "userChats"
+                        await setDoc(doc(db, "userChats", res.user.uid), {})
+                        // add a user to this db when this.user creates a chat with another user
                     });
                     navigate('/chatapp/home')
                 }
