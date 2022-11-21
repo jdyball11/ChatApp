@@ -1,50 +1,45 @@
-
-// 3. How to add new field to users collection?
-
-import { useState, useEffect, useContext } from "react"
+import { useState, useEffect, useContext, useRef } from "react"
 import { useNavigate } from "react-router-dom";
+import { MdOutlineAddPhotoAlternate } from "react-icons/md"
 
 import { updateProfile } from "firebase/auth";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage, db, auth } from "../Firebase-config"
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 
-import { AuthContext } from "../AuthContext";
-
-// import { MdOutlineAddPhotoAlternate } from "react-icons/md"
-
+// import { AuthContext } from "../AuthContext";
 import Navbar from "./Navbar"
 
 const EditProfile = () => {
     const [editFields, setEditFields] = useState({})
+    const [error, setError] = useState(false)
     const [chars, setChars] = useState(150)
+    const currentUserColRef = useRef()
     
     const navigate = useNavigate()
     const currentUserProfile = auth.currentUser // get logined-in user
-    let currentUserColRef  // get logined-in user document in users collection
 
     useEffect(() => {
-        const testing = async () =>{
+        const getUser = async () =>{
             if (currentUserProfile !== null) {
                 console.log("current login user from Auth: ", currentUserProfile);
-                currentUserColRef = doc(db, "users", currentUserProfile.uid)
-                console.log("User Collection Ref: ", currentUserColRef); // only refer to the doc
-                const docSnap = await getDoc(currentUserColRef)
-                if (docSnap.exists()) {
-                    console.log("docSnap :", docSnap.data());
+                let userDoc = doc(db, "users", currentUserProfile.uid)
+                currentUserColRef.current = userDoc
+                console.log("User Collection Ref: ", userDoc)
+                const userDocSnap = await getDoc(userDoc)
+                if (userDocSnap.exists()) {
+                    console.log("userDocSnap  :", userDocSnap.data());
                 }
 
                 setEditFields({
-                    photoURL: currentUserProfile.photoURL,
+                    // photoURL: currentUserProfile.photoURL,
                     displayName: currentUserProfile.displayName,
-                    about: docSnap.data().about
+                    about: userDocSnap.data().about
                 })
             }
         }
-        testing()
+        getUser()
     }, [currentUserProfile]) // useEffect will run when currentUser changes or remount
-
-
 
     const handleEditChange = (event) => {
         const { name, value } = event.target
@@ -68,41 +63,35 @@ const EditProfile = () => {
         const file = event.target[0].files[0]
         const displayName = event.target[1].value
         const about = event.target[3].value
-        // console.log(displayName);
-        // console.log(about)
-        console.log(event.target[0]); //profile Pic
-        console.log(event.target[1]); // displayName
-        console.log(event.target[2]); // email
-        console.log(event.target[3]); // about, how to get the value?
-        try{
+        try {
             const storageRef = ref(storage, displayName);
             const uploadTask = uploadBytesResumable(storageRef, file);
+
             uploadTask.on(
                 (error) => {
-                    // Handle unsuccessful uploads
-                    console.log(error)
+                    setError(true)
                 },
                 () => {
-                    // Handle successful uploads on complete
                     getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL) => {
-                        console.log('File available at', downloadURL);
-                        await updateProfile(auth.currentUserProfile, {
+                        await updateProfile(currentUserProfile, {
                             displayName,
-                            photoURL:downloadURL,
+                            // photoURL:downloadURL
                         })
-                        // Update users collection
-                        await updateDoc(currentUserColRef, {
-                            about,
-                            displayName,
-                            photoURL:downloadURL,
+                        console.log("Profile Updated");
+                        await updateDoc(currentUserColRef.current, {
+                            "about": about,
+                            "displayName": displayName,
+                            // photoURL:downloadURL
                         })
-                    });
+                        console.log("Doc Updated");
+                    })
+                    navigate('/chatapp/home')
                 }
             )
-        } catch(error) {
-            console.log("error: ",error)
+        } catch (error) {
+            setError(true)
+            console.log("Error Message: ", error.message);
         }
-        navigate('/chatapp/home')
     }
 
     return (
@@ -125,8 +114,8 @@ const EditProfile = () => {
                             name="profilePic" 
                         />
                         <label htmlFor="file" className="text-dcBlue flex flex-row gap-3 items-center justify-center">
-                            {/* <MdOutlineAddPhotoAlternate className="text-4xl" /> */}
-                            <img src={editFields.photoURL} alt="" />
+                            <MdOutlineAddPhotoAlternate className="text-4xl" />
+                            {/* <img src={editFields.photoURL} alt="" /> */}
                             Upload a profile picture
                         </label>
                         
@@ -173,4 +162,3 @@ const EditProfile = () => {
 }
 
 export default EditProfile
-
