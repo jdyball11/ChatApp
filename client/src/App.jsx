@@ -5,7 +5,7 @@ import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import { useContext } from "react"
 import Chat from "./components/Chat"
 import EditProfile from "./components/EditProfile"
-import { AuthContext } from "./authContext"
+import { AuthContext } from "./AuthContext"
 
 function App() {
 
