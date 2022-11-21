@@ -1,43 +1,36 @@
-// 1. Why Cannot edit user's display name? I tried to spread the user to userData
+
 // 3. How to add new field to users collection?
 
 import { useState, useEffect, useContext } from "react"
 import { useNavigate } from "react-router-dom";
 
 import { updateProfile } from "firebase/auth";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { auth } from "../Firebase-config"
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { auth, storage } from "../Firebase-config"
 
 import { AuthContext } from "../AuthContext";
-
 
 // import { MdOutlineAddPhotoAlternate } from "react-icons/md"
 
 import Navbar from "./Navbar"
 
 const EditProfile = () => {
-    const [editFields, setEditFields] = useState('')
-    const [chars, setChars] = useState(200)
-    const [userData, setUserData] = useState({})
+    const [editFields, setEditFields] = useState({})
+    const [chars, setChars] = useState(150)
     
     const navigate = useNavigate()
-    
-    const currentUser = useContext(AuthContext)
-    // useEffect(() => {
-    //     const auth = getAuth()
-    //     const user = auth.currentUser
-    //     const userData = {...user}
-    //     if (user !== null) {
-    //         // The user object has basic properties such as display name, email, etc.
-    //         const displayName = user.displayName;
-    //         const email = user.email;
-    //         const photoURL = user.photoURL;
-    //         setUserData(...user)
-    //     }
-    // }, [user])
+    const {currentUser} = useContext(AuthContext) // get logined-in user
 
-    // console.log(user.displayName)
-    console.log(currentUser);
+    useEffect(() => {
+        if (currentUser !== null) {
+            console.log(currentUser);
+            setEditFields({
+                photoURL: currentUser.photoURL,
+                displayName: currentUser.displayName,
+                about: currentUser.about
+            })
+        }
+    }, [currentUser]) // useEffect will run when currentUser changes or remount
 
 
     const handleEditChange = (event) => {
@@ -45,7 +38,7 @@ const EditProfile = () => {
 
         // console.log(event.target[3])
         if (name === "about") {
-            setChars(200 - value.length)
+            setChars(150 - value.length)
         }
         setEditFields({
             ...editFields,
@@ -55,14 +48,16 @@ const EditProfile = () => {
 
     const handleEditSubmit = async (event) => {
         event.preventDefault()
+        const file = event.target[0].files[0]
         const displayName = event.target[1].value
+        console.log(displayName);
         const about = event.target[3].value
-        console.log(event.target[0]); //profile Pic
-        console.log(event.target[1]); // displayName
-        console.log(event.target[2]); // email
-        console.log(event.target[3]); // about, how to get the value?
+        console.log(about)
+        // console.log(event.target[0]); //profile Pic
+        // console.log(event.target[1]); // displayName
+        // console.log(event.target[2]); // email
+        // console.log(event.target[3]); // about, how to get the value?
         try{
-            const storage = getStorage();
             const storageRef = ref(storage, displayName);
             const uploadTask = uploadBytesResumable(storageRef, file);
             uploadTask.on(
@@ -102,38 +97,38 @@ const EditProfile = () => {
                     </div>
 
                     {/* onSubmit={handleEditProfileSubmit} */}
-                    <form className="flex flex-col gap-6 w-60" onSubmit={handleEditSubmit}>
+                    <form className="flex flex-col gap-3 w-60" onSubmit={handleEditSubmit}>
 
                         <input 
                             type="file" id="file" className="hidden"
                             name="profilePic" 
                         />
+                        <p className="translate-y-0.5 text-dcBlue text-sm text-center">Upload a profile picture</p>
                         <label htmlFor="file" className="text-dcBlue flex flex-row gap-3 items-center justify-center">
                             {/* <MdOutlineAddPhotoAlternate className="text-4xl" /> */}
-                            {/* <img src={currentUser.photoURL} alt="" /> */}
-                            <span className="translate-y-0.5">Upload a profile picture</span>
+                            <img src={editFields.photoURL} alt="" />
                         </label>
                         
                         <input 
                             className="border-b p-2 mt-1 bg-lightWhite text-materialBlack"
                             type="text"
                             name="displayName" 
-                            value={currentUser?.displayName} 
+                            value={editFields.displayName} 
                             onChange={handleEditChange} 
                         />
                         
                         <input 
-                            className="border-b p-2 mt-1 bg-lightWhite text-materialBlack"
+                            className="border-b p-2 mt-1 bg-lightWhite text-slate-400"
                             type="text" readOnly="readonly"
                             name="email" 
                             value={currentUser?.email}
                         />
                         
                         <textarea
-                            className="border-b p-2 mt-1 bg-lightWhite text-materialBlack"
-                            maxLength="200" rows="4" id="about" placeholder=" Tell us about yourself"
+                            className="border-b p-2 mt-1 bg-lightWhite text-materialBlack "
+                            maxLength="150" rows="3" id="about" placeholder=" Tell us about yourself"
                             name="about" 
-                            value={currentUser?.about}
+                            value={editFields.about}
                             onChange={handleEditChange}
                             >
                         </textarea> 
