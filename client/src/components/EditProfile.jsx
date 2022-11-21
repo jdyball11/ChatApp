@@ -1,3 +1,6 @@
+// Problem is when the user edited the profile but did not upload new pic. 
+// that's when the image will not work
+
 import { useState, useEffect, useContext, useRef } from "react"
 import { useNavigate } from "react-router-dom";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md"
@@ -37,7 +40,7 @@ const EditProfile = () => {
                 }
 
                 setEditFields({
-                    // photoURL: currentUserProfile.photoURL,
+                    photoURL: currentUserProfile.photoURL,
                     displayName: currentUserProfile.displayName,
                     about: userDocSnap.data().about
                 })
@@ -65,37 +68,55 @@ const EditProfile = () => {
 
     const handleEditSubmit = async (event) => {
         event.preventDefault()
-        const file = event.target[0].files[0]
         const displayName = event.target[1].value
         const about = event.target[3].value
-        try {
-            const storageRef = ref(storage, displayName);
-            const uploadTask = uploadBytesResumable(storageRef, file);
-
-            uploadTask.on(
-                (error) => {
-                    setError(true)
-                },
-                () => {
-                    getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL) => {
-                        await updateProfile(currentUserProfile, {
-                            displayName,
-                            // photoURL:downloadURL
+        let file
+        // If no image select to upload
+        if (!event.target[0].files[0]) {
+            await updateProfile(currentUserProfile, {
+                displayName,
+            })
+            console.log("Profile Updated");
+            await updateDoc(currentUserColRef.current, {
+                "about": about,
+                "displayName": displayName,
+            })
+            console.log("Doc Updated");
+            navigate('/chatapp/home')
+        // if image selected to upload
+        } else {
+            file = event.target[0].files[0]
+            console.log("Image file: ", event.target[0].files[0])
+            try {
+                const storageRef = ref(storage, currentUserProfile.uid);
+                const uploadTask = uploadBytesResumable(storageRef, file);
+    
+                uploadTask.on(
+                    (error) => {
+                        setError(true)
+                    },
+                    () => {
+                        getDownloadURL(uploadTask.snapshot.ref).then( async (downloadURL) => {
+                            console.log('File available at', downloadURL);
+                            await updateProfile(currentUserProfile, {
+                                displayName,
+                                photoURL:downloadURL
+                            })
+                            console.log("Profile Updated");
+                            await updateDoc(currentUserColRef.current, {
+                                "about": about,
+                                "displayName": displayName,
+                                "photoURL": downloadURL
+                            })
+                            console.log("Doc Updated");
                         })
-                        console.log("Profile Updated");
-                        await updateDoc(currentUserColRef.current, {
-                            "about": about,
-                            "displayName": displayName,
-                            // photoURL:downloadURL
-                        })
-                        console.log("Doc Updated");
-                    })
-                    navigate('/chatapp/home')
-                }
-            )
-        } catch (error) {
-            setError(true)
-            console.log("Error Message: ", error.message);
+                        navigate('/chatapp/home')
+                    }
+                )
+            } catch (error) {
+                setError(true)
+                console.log("Error Message: ", error.message);
+            }
         }
     }
 
