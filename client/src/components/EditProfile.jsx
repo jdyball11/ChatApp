@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 
 import { updateProfile } from "firebase/auth";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { auth, storage } from "../Firebase-config"
+import { storage, db, auth } from "../Firebase-config"
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 import { AuthContext } from "../AuthContext";
 
@@ -19,18 +20,31 @@ const EditProfile = () => {
     const [chars, setChars] = useState(150)
     
     const navigate = useNavigate()
-    const {currentUser} = useContext(AuthContext) // get logined-in user
+    // const currentUserProfile = auth.currentUser // get logined-in user
+    const currentUserProfile = AuthContext.currentUser
+    let currentUserColRef  // get logined-in user document in users collection
 
+    
     useEffect(() => {
-        if (currentUser !== null) {
-            console.log(currentUser);
-            setEditFields({
-                photoURL: currentUser.photoURL,
-                displayName: currentUser.displayName,
-                about: currentUser.about
-            })
+        const testing = async () =>{
+            if (currentUserProfile !== null) {
+                console.log("current login user from Auth: ", currentUserProfile);
+                currentUserColRef = doc(db, "users", currentUserProfile.uid)
+                console.log("User Collection Ref: ", currentUserColRef); // only refer to the doc
+                const docSnap = await getDoc(currentUserColRef)
+                if (docSnap.exists()) {
+                    console.log("docSnap :", docSnap.data());
+                }
+
+                setEditFields({
+                    photoURL: currentUserProfile.photoURL,
+                    displayName: currentUserProfile.displayName,
+                    about: docSnap.data().about
+                })
+            }
         }
-    }, [currentUser]) // useEffect will run when currentUser changes or remount
+        testing()
+    }, [currentUserProfile]) // useEffect will run when currentUser changes or remount
 
 
     const handleEditChange = (event) => {
@@ -50,13 +64,13 @@ const EditProfile = () => {
         event.preventDefault()
         const file = event.target[0].files[0]
         const displayName = event.target[1].value
-        console.log(displayName);
         const about = event.target[3].value
-        console.log(about)
-        // console.log(event.target[0]); //profile Pic
-        // console.log(event.target[1]); // displayName
-        // console.log(event.target[2]); // email
-        // console.log(event.target[3]); // about, how to get the value?
+        // console.log(displayName);
+        // console.log(about)
+        console.log(event.target[0]); //profile Pic
+        console.log(event.target[1]); // displayName
+        console.log(event.target[2]); // email
+        console.log(event.target[3]); // about, how to get the value?
         try{
             const storageRef = ref(storage, displayName);
             const uploadTask = uploadBytesResumable(storageRef, file);
@@ -67,19 +81,23 @@ const EditProfile = () => {
                 },
                 () => {
                     // Handle successful uploads on complete
-                    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
                     getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL) => {
                         console.log('File available at', downloadURL);
-                        await updateProfile(auth.currentUser, {
+                        await updateProfile(auth.currentUserProfile, {
                             displayName,
+                            photoURL:downloadURL,
+                        })
+                        // Update users collection
+                        await updateDoc(currentUserColRef, {
                             about,
-                            photoURL:downloadURL
+                            displayName,
+                            photoURL:downloadURL,
                         })
                     });
                 }
             )
         } catch(error) {
-            console.log(error)
+            console.log("error: ",error)
         }
         navigate('/chatapp/home')
     }
@@ -103,10 +121,10 @@ const EditProfile = () => {
                             type="file" id="file" className="hidden"
                             name="profilePic" 
                         />
-                        <p className="translate-y-0.5 text-dcBlue text-sm text-center">Upload a profile picture</p>
                         <label htmlFor="file" className="text-dcBlue flex flex-row gap-3 items-center justify-center">
                             {/* <MdOutlineAddPhotoAlternate className="text-4xl" /> */}
                             <img src={editFields.photoURL} alt="" />
+                            Upload a profile picture
                         </label>
                         
                         <input 
@@ -121,7 +139,7 @@ const EditProfile = () => {
                             className="border-b p-2 mt-1 bg-lightWhite text-slate-400"
                             type="text" readOnly="readonly"
                             name="email" 
-                            value={currentUser?.email}
+                            value={currentUserProfile?.email}
                         />
                         
                         <textarea
@@ -148,3 +166,4 @@ const EditProfile = () => {
 }
 
 export default EditProfile
+
