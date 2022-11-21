@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { getAuth, updateProfile } from "firebase/auth";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
-import { AuthContext } from "../authContext";
+import { AuthContext } from "../AuthContext";
 
 // import { MdOutlineAddPhotoAlternate } from "react-icons/md"
 
