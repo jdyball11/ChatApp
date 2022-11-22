@@ -21,7 +21,7 @@ const UserProfile = () => {
     useEffect(() => {
         const getUserCol = async () =>{
             if (currentUser !== null) {
-                let userDoc = doc(db, "users", currentUser.uid)
+                let userDoc = doc(db, "users", currentUser?.uid)
                 console.log("User Collection Ref: ", userDoc)
                 const userDocSnap = await getDoc(userDoc)
                 if (userDocSnap.exists()) {
@@ -49,8 +49,8 @@ const UserProfile = () => {
                 {/* User */}
                 <div className='flex gap-2 items-center text-xl'>
                     <Link to="/chatapp/userprofile" className="flex items-center">
-                        <img src={currentUser.photoURL} alt="profile picture" className='w-9 h-9 object-cover rounded-full'/>
-                        <span>{currentUser.displayName}</span>
+                        <img src={currentUser?.photoURL} alt="profile picture" className='w-9 h-9 object-cover rounded-full'/>
+                        <span>{currentUser?.displayName}</span>
                     </Link>
                     <MdLogout onClick={()=>signOut(auth)}/>
                 </div>
@@ -61,7 +61,7 @@ const UserProfile = () => {
             <div className="flex flex-col gap-6 justify-center items-center rounded-lg mx-3 p-6 bg-lightWhite filter shadow-2xl shadow-gray-500 w-fit">
                 <div className="flex justify-between relative">
                     <Link to="/chatapp/profile" className="absolute right-0 flex justify-center items-center text-dcBlue text-2xl w-fit h-fit p-2 rounded-full hover:bg-gray-300"><FiEdit2 /></Link>
-                    <img src={currentUser.photoURL} alt={currentUser.displayName} className="w-80 h-80 rounded-full m-auto object-cover" />
+                    <img src={currentUser?.photoURL} alt={currentUser.displayName} className="w-80 h-80 rounded-full m-auto object-cover" />
                 </div>
                 <div className="flex flex-col items-start gap-y-2">
                     <p className="text-dcBlue text-xl">Display Name: <span className="text-materialBlack">{currentUser.displayName}</span></p>
