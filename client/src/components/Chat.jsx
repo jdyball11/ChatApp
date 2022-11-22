@@ -10,15 +10,13 @@ const Chat = () => {
     const { data } = useContext(ChatContext)
     console.log(data)
     return (
-        <div className='border-2 flex'>
+        <div className='flex'>
             {/* Chat Info */}
-            This is the chat window*
             <div>
-                <div className='text-dcBlue h-20 bg-grey flex items-center justify-between'>
+                <div className='text-white p-3 bg-dcBlue flex items-center justify-start gap-3 text-xl font-bold'>
+                    <img src={data.user.photoURL} alt="profile picture" className='w-10 aspect-square object-cover rounded-lg' />
                     {data.user?.displayName}
-                    <div>
 
-                    </div>
                 </div>
                 <Messages />
                 <Input />

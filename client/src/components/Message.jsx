@@ -1,26 +1,68 @@
 import React, { useContext } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
 import { ChatContext } from '../contexts/ChatContext'
+import { Timestamp } from 'firebase/firestore'
 
 const Message = ({ message }) => {
     const { currentUser } = useContext(AuthContext)
     const { data } = useContext(ChatContext)
+    // console.log(message)
+    
+    const convertDate = (time) => {
+        let dateInMillis = time * 1000
+        let date = new Date(dateInMillis)
+        let myDate = date.toLocaleDateString()
+        let myTime = date.toLocaleTimeString()
+        myDate = myDate.replaceAll('/', '-')
+
+        return myDate + " " + myTime
+
+    }
+    const messageTime = convertDate(message.date.seconds)
+
+
+
     return (
-        // message owner
-        <div className='border-dcBlue flex justify-end'>
-            {/* message body */}
-            <div>
-                <p>{message.text}</p>
-                {message.img && <img src={message.img} />}
-            </div>
-            <div>
-                <img src={message.senderId === currentUser.uid 
-                ? currentUser.photoURL 
-                : data.user.photoURL} alt="profile picture" className='w-10 aspect-square object-cover'/>
-                <span>Just now</span>
-            </div>
-            
-        </div>
+        <>
+
+            {message.senderId === currentUser.uid && <div className='border-dcBlue flex justify-start gap-3'>
+                {/* profile picture */}
+                <div className='flex flex-col'>
+                    <img src={currentUser.photoURL} alt="profile picture"
+                        className='flex w-12 aspect-square rounded-lg object-cover' />
+                </div>
+                {/* message body */}
+                <div>
+                    <div className='flex gap-2'>
+                        <div className='font-bold'>{currentUser.displayName}</div>
+                        <div>{messageTime}</div>
+                    </div>
+                    <div className='bg-dcBlue py-2 px-3 text-white rounded-xl flex flex-wrap 
+                    max-w-xs'>{message.text}</div>
+                    {message.img && <img src={message.img} />}
+                </div>
+
+
+            </div>}
+            {message.senderId === data.user.uid && <div className='border-dcBlue flex justify-start gap-3'>
+                {/* profile picture */}
+                <div className='flex flex-col'>
+                    <img src={data.user.photoURL} alt="profile picture"
+                        className='w-12 aspect-square rounded-lg object-cover' />
+                </div>
+                {/* message body */}
+                <div>
+                    <div className='flex gap-2'>
+                        <div className='font-bold'>{data.user.displayName}</div>
+                        <div>{messageTime}</div>
+                    </div>
+                    <div className='bg-blue-300 py-2 px-3 text-white rounded-xl flex flex-wrap'>{message.text}</div>
+                    {message.img && <img src={message.img} />}
+                </div>
+
+
+            </div>}
+        </>
     )
 }
 
