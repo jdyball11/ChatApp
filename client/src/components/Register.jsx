@@ -74,6 +74,7 @@ const Register = () => {
                         await setDoc(doc(db, "userChats", res.user.uid), {})
                         // add a user to this db when this.user creates a chat with another user
                     });
+                    setError(false)
                     navigate('/chatapp/home')
                 }
             );
@@ -125,11 +126,15 @@ const Register = () => {
                             className="border-b p-2 mt-1 bg-lightWhite text-materialBlack" />
                         <input type="text" name="email" value={registerFields.email} onChange={handleRegisterChange} placeholder=" email *"
                             className="border-b p-2 mt-1 bg-lightWhite text-materialBlack" />
+                            {error &&  
+                                <span className="text-xs p-0 text-red-500 mt-0">
+                                Email is already existed.
+                                </span>}
                         <input type="password" name="password" value={registerFields.password} onChange={handleRegisterChange} placeholder=" password *"
                             className="border-b p-2 mt-1 bg-lightWhite text-materialBlack" />
                         {/* Password validation */}
                         {passwordError && 
-                            <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
+                            <span className="text-xs p-0 text-red-500 mt-0">
                             {passwordError}
                             </span>}
                         {/* <input type="text" name="confirmPassword" value={registerFields.confirmPassword} onChange={handleRegisterChange} placeholder=" confirm password *"

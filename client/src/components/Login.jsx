@@ -74,7 +74,7 @@ const Login = () => {
                         <input type="password" name="password" value={loginFields.password} onChange={handleLoginChange} placeholder=" password *"
                             className="border-b p-2 bg-lightWhite text-materialBlack" />
                         
-                        {error && <p className="text-xs p-0 text-red-500 mt-0">Incorrect email address or password</p>}
+                        {error && <span className="text-xs p-0 text-red-500 mt-0">Incorrect email address or password.</span>}
 
                         {/* Create account button */}
                         <label className="flex flex-col mt-3">
