@@ -3,10 +3,10 @@ import Login from "./components/Login"
 import Register from "./components/Register"
 import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom'
 import { useContext } from "react"
-import Chat from "./components/Chat"
+import Home from "./components/Home"
 import EditProfile from "./components/EditProfile"
 import UserProfile from "./components/UserProfile"
-import { AuthContext } from "./AuthContext"
+import { AuthContext } from "./contexts/AuthContext"
 
 function App() {
 
@@ -30,7 +30,7 @@ function App() {
             <Route path='/chatapp/'>
               {/* protected: home page with chats */}
               <Route path='home' element={<ProtectedRoute>
-                <Chat />
+                <Home />
               </ProtectedRoute>} />
               {/* protected: user profile page */}
               <Route path='profile' element={<ProtectedRoute>

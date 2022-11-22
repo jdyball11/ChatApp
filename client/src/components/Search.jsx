@@ -1,8 +1,9 @@
 import { useContext, useState } from "react"
 import { collection, query, where, getDocs, setDoc, doc, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../Firebase-config";
-import { AuthContext } from "../AuthContext";
+import { AuthContext } from "../contexts/AuthContext";
 import { serverTimestamp } from "firebase/firestore";
+import { ChatContext } from "../contexts/ChatContext";
 
 
 const Search = () => {
@@ -11,6 +12,7 @@ const Search = () => {
     const [user, SetUser] = useState(null)
     const [error, setError] = useState(false)
     const { currentUser } = useContext(AuthContext)
+    const { dispatch, ACTION } = useContext(ChatContext)
 
     const handleSearch = async () => {
         // find in the users collection in firebase db, where displayName == username
@@ -35,10 +37,8 @@ const Search = () => {
 
     const handleSelect = async () => {
         // check whether the chats in firestore db exist, if not create a new chat
-        console.log('currentUser: ',currentUser.uid)
-        console.log("user: ", user.uid)
+
         const combinedId = currentUser.uid > user.uid ? currentUser.uid + user.uid : user.uid + currentUser.uid
-        console.log("combinedId: ", combinedId)
         try {
             const res = await getDoc(doc(db, "chats", combinedId))
             console.log(!res.exists())
