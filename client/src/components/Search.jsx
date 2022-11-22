@@ -26,7 +26,7 @@ const Search = () => {
                 SetUser(doc.data())
             });
         } catch (error) {
-            console.log(error.message)
+            console.log("no data from search", error.message)
             setError(true)
         }
     }
@@ -75,22 +75,26 @@ const Search = () => {
 
         <div>
             {/* the search form */}
-            <div>
-                <input className="text-black" type="text"
-                    placeholder="Search Friend"
-                    onKeyDown={handleEnter}
-                    onChange={event => SetUsername(event.target.value)}
-                    value={username} />
-            </div>
-            {error && <span>User not found</span>}
-            {/* userChat */}
-            {user && <div onClick={handleSelect} className="flex justify-between p-3 items-center">
-                <img className="w-10" src={user.photoURL} />
-                {/* userChat.info */}
-                <div>
-                    <span className="text-black">{user.displayName}</span>
+            <div className="border-b-2 bg-grey">
+                <div className="p-2 ">
+                    <input className="bg-transparent b-none text-black outline-0 p-1" type="text"
+                        placeholder="Search Friend"
+                        onKeyDown={handleEnter}
+                        onChange={event => SetUsername(event.target.value)}
+                        value={username} />
                 </div>
-            </div>}
+                
+                    
+                    {/* userChat */}
+                    {error && <span>User not found</span>}
+                    {user && <div onClick={handleSelect} className="flex items-center p-3 gap-3 cursor-pointer">
+                        <img className="w-16 aspect-square object-cover rounded-full" src={user.photoURL} />
+                        {/* userChat.info */}
+                    <div>
+                        <span className=" text-dcBlue text-2xl font-bold">{user.displayName}</span>
+                    </div>
+                </div>}
+            </div>
         </div>
     )
 }
