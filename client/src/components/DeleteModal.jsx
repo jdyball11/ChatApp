@@ -1,15 +1,19 @@
 import { useNavigate } from "react-router-dom"
+import { useState, useContext } from "react"
 
 import { doc, getDoc, deleteDoc } from "firebase/firestore";
 import { ref, deleteObject } from "firebase/storage";
 import { deleteUser, reauthenticateWithCredential } from "firebase/auth";
 import { db, auth, storage } from "../Firebase-config"
 
+import { AuthContext } from "../contexts/AuthContext";
+
 
 const DeleteModal = ({visible, onClose}) => {
+    const [error, setError] = useState("")
     const navigate = useNavigate()
     
-    const user = auth.currentUser
+    const user = useContext(AuthContext).currentUser
     const photoRef = ref(storage, user?.uid)
 
     if (!visible){
@@ -24,11 +28,17 @@ const DeleteModal = ({visible, onClose}) => {
     }
 
     const handleDeleteAccount = async () => {
+        // reauthentication
+        // const credential = promptForCredentials()
+        // await reauthenticateWithCredential(user, credential)
         try {
             await Promise.all([deleteObject(photoRef), deleteDoc(doc(db, "users", user.uid)), deleteUser(user)])
+            setError("")
             navigate('/chatapp/register')    
-        } catch (e) {
-            console.log(e)
+        } catch (error) {
+            console.log("Delete Account Error: ", error.message)
+            console.log(typeof(error.message))
+            setError(String(error.message))
         }
     }
 
@@ -46,8 +56,8 @@ const DeleteModal = ({visible, onClose}) => {
                                 <div className="sm:flex sm:items-start">
 
                                     <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                                        <svg className="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 10.5v3.75m-9.303 3.376C1.83 19.126 2.914 21 4.645 21h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 4.88c-.866-1.501-3.032-1.501-3.898 0L2.697 17.626zM12 17.25h.007v.008H12v-.008z" />
+                                        <svg className="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 10.5v3.75m-9.303 3.376C1.83 19.126 2.914 21 4.645 21h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 4.88c-.866-1.501-3.032-1.501-3.898 0L2.697 17.626zM12 17.25h.007v.008H12v-.008z" />
                                         </svg>
                                     </div>
                         
@@ -55,6 +65,7 @@ const DeleteModal = ({visible, onClose}) => {
                                         <h3 className="text-lg font-medium leading-6 text-gray-900" id="modal-title">Deactivate account</h3>
                                         <div className="mt-2">
                                             <p className="text-sm text-gray-500">Are you sure you want to deactivate your account? All of your data will be permanently removed. This action cannot be undone.</p>
+                                            {error && <p className="text-sm text-red-500">Account cannot be deleted due to {error.message}</p>}
                                         </div>
                                     </div>
 
@@ -62,8 +73,15 @@ const DeleteModal = ({visible, onClose}) => {
                             </div>
                             
                             <div className="px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                                <button type="button" onClick={handleDeleteAccount} className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm">Deactivate</button>
-                                <button type="button" onClick={onClose} className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">Cancel</button>
+                                <button 
+                                type="button" onClick={handleDeleteAccount} 
+                                className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                                >Deactivate</button>
+                                
+                                <button 
+                                type="button" onClick={onClose} 
+                                className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                                >Cancel</button>
                             </div>
                         </div>
                     </div>
