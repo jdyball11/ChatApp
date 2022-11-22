@@ -13,6 +13,8 @@ const Messages = () => {
     console.log(data)
 
     useEffect(() => {
+        // remember to wrap the useEffect in a function with condition to make sure it only runs 
+        // when the third variable, in this case data.chatId is available
         const getMessages = () => {
             const unsub = onSnapshot(doc(db, "chats", data.chatId), (doc) => {
                 // setMessages with doc.data() if a chat alreayd exists
@@ -29,7 +31,7 @@ const Messages = () => {
 
     return (
         // the messages
-        <div>
+        <div className='flex flex-col gap-3 p-3'>
             {messages.map((message) => (
                 <Message message={message} key={message.id} />
             ))}

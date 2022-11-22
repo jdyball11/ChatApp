@@ -6,7 +6,7 @@ import { AuthContext } from '../contexts/AuthContext'
 import { arrayUnion, doc, updateDoc, Timestamp, serverTimestamp } from 'firebase/firestore'
 import { db, storage } from '../Firebase-config'
 import { v4 as uuidv4 } from 'uuid'
-import { uploadBytesResumable } from 'firebase/storage'
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 
 
 
@@ -30,7 +30,7 @@ const Input = () => {
                 () => {
                     // Handle successful uploads on complete
                     // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-                    getDownloadURL(uploadTask.snapshot.ref).then( async (downloadURL) => {
+                    getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
                         await updateDoc(doc(db, "chats", data.chatId), {
                             messages: arrayUnion({
                                 // using uuidv4 to generate unique id for each message
@@ -80,15 +80,16 @@ const Input = () => {
     }
 
     return (
-        <div className='flex text-2xl items-center gap-3'>
+        <div className='flex text-xl items-center gap-3 border-t-2 p-2'>
             <input type="file" id="file" onChange={event=>setImg(event.target.files[0])}
             className="hidden" />
-            <label htmlFor='file'><FaPlus /></label>
+            <label htmlFor='file' className=''><FaPlus className='bg-dcBlue text-[#fafafa] p-1 rounded-full w-6 h-6'/></label>
             
             {/* text field for message */}
             <input type="text" 
-            placeholder={'Message to ' + data.user.displayName} 
-            onChange={event=>setText(event.target.value)} value={text}/>
+            placeholder={'Message ' + data.user.displayName} 
+            onChange={event=>setText(event.target.value)} value={text}
+            className="flex-grow p-2 bg-[#fafafa]" />
             {/* Send button */}
             <MdSend onClick={handleSend}/>
             
