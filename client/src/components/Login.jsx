@@ -67,7 +67,7 @@ const Login = () => {
 
                     <form className="flex flex-col gap-6 w-60" onSubmit={handleLoginSubmit}>
 
-                        <input type="text" name="username" value={loginFields.username} onChange={handleLoginChange} placeholder=" username *"
+                        <input type="text" name="username" value={loginFields.username} onChange={handleLoginChange} placeholder=" email address *"
                             className="border-b p-2 bg-lightWhite text-materialBlack" />
 
 
