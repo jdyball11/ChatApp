@@ -10,14 +10,14 @@ import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import Chats from "./Chats";
 import Chat from "./Chat";
+import Sidebar from "./Sidebar";
 
 const Home = () => {
     const { currentUser } = useContext(AuthContext)
     return (
         <div>
             <Navbar />
-            <Search />
-            <Chats />
+            <Sidebar />
             <Chat />
             <Link to="/chatapp/profile" className="text-dcBlue">Edit Profile (For testing purpose)</Link>
         </div>
