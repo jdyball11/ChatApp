@@ -44,7 +44,7 @@ const Message = ({ message }) => {
                     </div>
                     <div className='bg-dcBlue py-2 px-3 text-white rounded-xl flex flex-wrap 
                     max-w-xs'>{message.text}</div>
-                    {message.img && <img src={message.img} />}
+                    {message.img && <img src={message.img} className="max-w-xs"/>}
                 </div>
 
 
@@ -62,7 +62,7 @@ const Message = ({ message }) => {
                         <div>{messageTime}</div>
                     </div>
                     <div className='bg-blue-300 py-2 px-3 text-white rounded-xl flex flex-wrap'>{message.text}</div>
-                    {message.img && <img src={message.img} />}
+                    {message.img && <img src={message.img} className="w-20" />}
                 </div>
 
 
