@@ -1,12 +1,17 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
 import { ChatContext } from '../contexts/ChatContext'
 import { Timestamp } from 'firebase/firestore'
+import { redirect } from 'react-router-dom'
 
 const Message = ({ message }) => {
     const { currentUser } = useContext(AuthContext)
     const { data } = useContext(ChatContext)
     // console.log(message)
+
+    const ref = useRef()
+
+    
     
     const convertDate = (time) => {
         let dateInMillis = time * 1000
@@ -25,11 +30,11 @@ const Message = ({ message }) => {
     return (
         <>
 
-            {message.senderId === currentUser.uid && <div className='border-dcBlue flex justify-start gap-3'>
+            {message.senderId === currentUser.uid && <div className='border-dcBlue flex justify-end gap-3'>
                 {/* profile picture */}
                 <div className='flex flex-col'>
                     <img src={currentUser.photoURL} alt="profile picture"
-                        className='flex w-12 aspect-square rounded-lg object-cover' />
+                        className='flex w-12 aspect-square rounded-full object-cover' />
                 </div>
                 {/* message body */}
                 <div>
@@ -48,7 +53,7 @@ const Message = ({ message }) => {
                 {/* profile picture */}
                 <div className='flex flex-col'>
                     <img src={data.user.photoURL} alt="profile picture"
-                        className='w-12 aspect-square rounded-lg object-cover' />
+                        className='w-12 aspect-square rounded-full object-cover' />
                 </div>
                 {/* message body */}
                 <div>

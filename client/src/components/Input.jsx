@@ -79,6 +79,10 @@ const Input = () => {
         setImg(null)
     }
 
+    const handleEnter = (e) => {
+        e.code === "Enter" && handleSend()
+    }
+
     return (
         <div className='flex text-xl items-center gap-3 border-t-2 p-2'>
             <input type="file" id="file" onChange={event=>setImg(event.target.files[0])}
@@ -86,7 +90,7 @@ const Input = () => {
             <label htmlFor='file' className=''><FaPlus className='bg-dcBlue text-[#fafafa] p-1 rounded-full w-6 h-6'/></label>
             
             {/* text field for message */}
-            <input type="text" 
+            <input type="text" onKeyDown={handleEnter}
             placeholder={'Message ' + data.user.displayName} 
             onChange={event=>setText(event.target.value)} value={text}
             className="flex-grow p-2 bg-[#fafafa]" />

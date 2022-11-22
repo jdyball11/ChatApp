@@ -9,18 +9,19 @@ const Chat = () => {
     const { data } = useContext(ChatContext)
     console.log(data)
     return (
-        <div className='flex'>
+        // {chat}
+        <div className='w-full h-screen'> 
             {/* Chat Info */}
-            <div>
-                <div className='text-white p-3 bg-dcBlue flex items-center justify-start gap-3 text-xl font-bold'>
+              <div className='text-white h-20 w-full p-3 bg-dcBlue flex items-center justify-start gap-3 text-xl font-bold'> 
+                <div className="flex gap-5 flex items-center">
+                    {/* {Icons / profilename } */}
                     <img src={data.user.photoURL} alt="profile picture" className='w-10 aspect-square object-cover rounded-lg' />
                     {data.user?.displayName}
 
-                </div>
-                <Messages />
-                <Input />
+                </div>  
             </div>
-
+            <Messages />
+            <Input />
         </div>
     )
 }
