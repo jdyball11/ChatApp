@@ -9,12 +9,15 @@ const Chat = () => {
     const { data } = useContext(ChatContext)
     console.log(data)
     return (
-        <div className='border-2'>
+        <div className='border-2 flex'>
             {/* Chat Info */}
             This is the chat window*
             <div>
-                <div className='text-dcBlue'>
+                <div className='text-dcBlue h-20 bg-grey flex items-center justify-between'>
                     {data.user?.displayName}
+                    <div>
+
+                    </div>
                 </div>
                 <Messages />
                 <Input />
