@@ -5,6 +5,7 @@ import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom'
 import { useContext } from "react"
 import Home from "./components/Home"
 import EditProfile from "./components/EditProfile"
+import UserProfile from "./components/UserProfile"
 import { AuthContext } from "./contexts/AuthContext"
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
               <Route path='register' element={<Register />} />
               {/* login page */}
               <Route path='login' element={<Login />} />            
+              <Route path='userprofile' element={<UserProfile />} />          
             </Route>
           </Routes>
         </BrowserRouter>

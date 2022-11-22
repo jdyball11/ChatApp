@@ -4,6 +4,7 @@ import { useContext } from 'react'
 import Messages from './Messages'
 import Input from './Input'
 
+
 const Chat = () => {
     // access the data:state in ChatContext
     const { data } = useContext(ChatContext)
