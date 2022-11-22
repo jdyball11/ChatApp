@@ -66,7 +66,7 @@ const UserProfile = () => {
                 <div className="flex flex-col items-start gap-y-2">
                     <p className="text-dcBlue text-xl">Display Name: <span className="text-materialBlack">{currentUser.displayName}</span></p>
                     <p className="text-dcBlue text-xl">Email Address: <span className="text-materialBlack">{currentUser.email}</span></p>
-                    <p className="text-dcBlue text-xl">About: <span className="text-materialBlack">{userAbout ? userAbout : "..."}</span></p>
+                    <p className="text-dcBlue text-xl max-w-sm">About: <span className="text-materialBlack">{userAbout ? userAbout : "..."}</span></p>
                     <p className="text-dcBlue text-xl">Status: <span className="text-materialBlack">Online/Away/Busy/Invisible</span></p>
                     <p className="text-dcBlue text-xl">Theme Mode: <span className="text-materialBlack">toggle: dark/light</span></p>
                     <button 

@@ -143,7 +143,7 @@ const EditProfile = () => {
             {/* Body/Content */}
             <div className="flex justify-center items-center">
             <div 
-            className="flex flex-col gap-6 justify-center items-center rounded-lg mx-3 p-6 bg-lightWhite filter shadow-2xl shadow-gray-500">
+            className="flex flex-col gap-6 justify-center items-center rounded-lg mx-3 p-8 bg-lightWhite filter shadow-2xl shadow-gray-500">
                 <div className="text-3xl font-black text-dcBlue">
                     Edit Profile
                     <div className="text-base font-normal text-center mt-1 text-dcBlue">
@@ -188,16 +188,17 @@ const EditProfile = () => {
 
                     {/* Submit edit profile button */}
                     <input 
-                        className="flex rounded-md p-2 justify-center transition-all bg-dcBlue text-lightWhite font-medium focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:ring-offset-2"
+                        className="flex rounded-md p-2 justify-center transition-all bg-dcBlue hover:bg-indigo-300 text-lightWhite font-medium focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:ring-offset-2"
                         type="submit" 
                         value="EDIT PROFILE"  
                     />
+                    
+                    {/* Cancel editing button */}
+                    <button
+                        onClick={handleCancelEdit}
+                        className="inline-flex w-full justify-center rounded-md bg-gray-300 p-2 text-base font-medium text-gray-500 shadow-sm hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    >CANCEL</button>
                 </form>
-                {/* Cancel editing button */}
-                <button
-                    onClick={handleCancelEdit}
-                    className="mt-0 inline-flex w-full justify-center rounded-md border border-gray-300 bg-gray-300 px-4 py-2 text-base font-medium text-gray-500 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >CANCEL</button>
             </div>
             </div>
         </div>
