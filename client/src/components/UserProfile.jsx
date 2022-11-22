@@ -2,11 +2,12 @@ import { useContext, useState, useEffect } from 'react';
 import {Link, useNavigate} from "react-router-dom"
 
 import { doc, getDoc, deleteDoc } from "firebase/firestore";
-import { db, auth } from "../Firebase-config"
+import { db, auth, storage } from "../Firebase-config"
+import { ref, deleteObject } from "firebase/storage";
 import { deleteUser } from "firebase/auth";
 
 import { MdLogin } from 'react-icons/md';
-import { AuthContext } from "../AuthContext";
+import { AuthContext } from "../contexts/AuthContext";
 import Navbar from "./Navbar"
 import { async } from '@firebase/util';
 // import DeleteModal from "./DeleteModal"
@@ -15,6 +16,7 @@ const UserProfile = () => {
     const {currentUser} = useContext(AuthContext)
     const [userAbout, setUserAbout] = useState("") 
     const user = auth.currentUser
+    const photoRef = ref(storage, user?.uid)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -33,17 +35,44 @@ const UserProfile = () => {
     }, [currentUser])
 
     const handleDeleteAccount = async () => {
-        await deleteDoc(doc(db, "users", user.uid)); // currentUser.uid does not work
-        console.log("Doc deleted");
-        await deleteUser(user)
-            .then(() => {
-                // User deleted.
-                console.log("User & doc deleted");
-                navigate('/chatapp/register')
-          }).catch((error) => {
-                // An error ocurred
-                console.log(error);
-          });
+        try {
+            await Promise.all([deleteDoc(doc(db, "users", user.uid)), deleteObject(photoRef), deleteUser(user)])
+            navigate('/chatapp/register')    
+        } catch (e) {
+            console.log(e)
+        }
+
+        // Alternativa option 1:
+        // await deleteDoc(doc(db, "users", user.uid)).then(() => { // currentUser.uid does not work
+        //     console.log("Doc deleted");
+        // }).catch((error) => {
+        //     console.log(error)
+        // })
+        // await deleteObject(photoRef).then(() => {
+        //     console.log("Image deleted");
+        // }).catch((error) => {
+        //     console.log(error)
+        // })
+        // await deleteUser(user).then(() => {
+        //     console.log("User & doc deleted");
+        //     navigate('/chatapp/register')
+        // }).catch((error) => {
+        //     console.log(error);
+        // });
+        
+        // Alternativa option 2:
+        // try {
+        //     await deleteDoc(doc(db, "users", user.uid)) // currentUser.uid does not work
+        //     console.log("Doc deleted");
+        //     await deleteObject(photoRef)
+        //     console.log("Image deleted");
+        //     await deleteUser(user)
+        //     console.log("User & doc deleted");
+        //     navigate('/chatapp/register')
+        // }
+        // catch (error) {
+        //     console.log(error);
+        // }
     }
 
     return (
