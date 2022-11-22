@@ -120,6 +120,10 @@ const Register = () => {
                                     className="border-b p-2 mt-1 bg-lightWhite text-materialBlack" />
                                 <input type="text" name="email" value={registerFields.email} onChange={handleRegisterChange} placeholder=" email *"
                                     className="border-b p-2 mt-1 bg-lightWhite text-materialBlack" />
+                                    {error &&  
+                                        <span className="text-xs p-0 text-red-500 mt-0">
+                                        Email is already existed.
+                                        </span>}
                                 <input type="password" name="password" value={registerFields.password} onChange={handleRegisterChange} placeholder=" password *"
                                     className="border-b p-2 mt-1 bg-lightWhite text-materialBlack" />
                                 {/* Password validation */}

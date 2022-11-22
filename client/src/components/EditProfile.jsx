@@ -1,37 +1,32 @@
-// Problem is when the user edited the profile but did not upload new pic. 
-// that's when the image will not work
-
 import { useState, useEffect, useContext, useRef } from "react"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md"
+import { FaRocketchat } from 'react-icons/fa'
+import { MdLogout } from 'react-icons/md'
 
 import { updateProfile } from "firebase/auth";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage, db, auth } from "../Firebase-config"
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 
-
 import { AuthContext } from "../contexts/AuthContext";
 
-// import { MdOutlineAddPhotoAlternate } from "react-icons/md"
-
-
-import Navbar from "./Navbar"
+// import Navbar from "./Navbar"
 
 const EditProfile = () => {
     const [editFields, setEditFields] = useState({})
     const [error, setError] = useState(false)
     const [chars, setChars] = useState(150)
     const currentUserColRef = useRef()
+    const {currentUser} = useContext(AuthContext)
     
     const navigate = useNavigate()
-    const currentUserProfile = auth.currentUser // get logined-in user
 
     useEffect(() => {
         const getUser = async () =>{
-            if (currentUserProfile !== null) {
-                console.log("current login user from Auth: ", currentUserProfile);
-                let userDoc = doc(db, "users", currentUserProfile.uid)
+            if (currentUser !== null) {
+                console.log("current login user from AuthContext: ", currentUser);
+                let userDoc = doc(db, "users", currentUser?.uid)
                 currentUserColRef.current = userDoc
                 console.log("User Collection Ref: ", userDoc)
                 const userDocSnap = await getDoc(userDoc)
@@ -40,19 +35,19 @@ const EditProfile = () => {
                 }
 
                 setEditFields({
-                    photoURL: currentUserProfile.photoURL,
-                    displayName: currentUserProfile.displayName,
+                    photoURL: currentUser.photoURL,
+                    displayName: currentUser.displayName,
                     about: userDocSnap.data().about
                 })
             }
         }
         getUser()
-    }, [currentUserProfile]) // useEffect will run when currentUser changes or remount
+    }, [currentUser]) // useEffect will run when currentUser changes or remount
 
+    // handle change at form input
     const handleEditChange = (event) => {
         const { name, value } = event.target
-
-        // console.log(event.target[3])
+        // check "about" characters length
         if (name === "about") {
             setChars(150 - value.length)
         }
@@ -62,10 +57,12 @@ const EditProfile = () => {
         })
     }
 
+    // handle cancel profile edit button
     const handleCancelEdit = () => {
         navigate('/chatapp/home')
     }
 
+    // handle form submit
     const handleEditSubmit = async (event) => {
         event.preventDefault()
         const displayName = event.target[1].value
@@ -73,32 +70,39 @@ const EditProfile = () => {
         let file
         // If no image select to upload
         if (!event.target[0].files[0]) {
-            await updateProfile(currentUserProfile, {
-                displayName,
-            })
-            console.log("Profile Updated");
-            await updateDoc(currentUserColRef.current, {
-                "about": about,
-                "displayName": displayName,
-            })
-            console.log("Doc Updated");
-            navigate('/chatapp/home')
+            try {
+                await updateProfile(currentUser, {
+                    displayName,
+                })
+                console.log("Profile Updated");
+                await updateDoc(currentUserColRef.current, {
+                    "about": about,
+                    "displayName": displayName,
+                })
+                console.log("Doc Updated");
+                setError(false)
+                navigate('/chatapp/home')
+            } catch (error) {
+                setError(true)
+                console.log("Error message- submit with no image upload: ", error.message);
+            }
         // if image selected to upload
         } else {
             file = event.target[0].files[0]
             console.log("Image file: ", event.target[0].files[0])
             try {
-                const storageRef = ref(storage, currentUserProfile.uid);
+                const storageRef = ref(storage, currentUser.uid);
                 const uploadTask = uploadBytesResumable(storageRef, file);
     
                 uploadTask.on(
                     (error) => {
                         setError(true)
+                        console.log("Upload Task Error Message: ", error.message);
                     },
                     () => {
                         getDownloadURL(uploadTask.snapshot.ref).then( async (downloadURL) => {
                             console.log('File available at', downloadURL);
-                            await updateProfile(currentUserProfile, {
+                            await updateProfile(currentUser, {
                                 displayName,
                                 photoURL:downloadURL
                             })
@@ -110,6 +114,7 @@ const EditProfile = () => {
                             })
                             console.log("Doc Updated");
                         })
+                        setError(false)
                         navigate('/chatapp/home')
                     }
                 )
@@ -122,67 +127,80 @@ const EditProfile = () => {
 
     return (
         <div className="flex flex-col gap-12 bg-dcBlue h-screen">
-            <Navbar />
-            <div className="flex flex-col gap-6 justify-center items-center rounded-lg
-                mx-3 p-6 bg-lightWhite filter shadow-2xl shadow-gray-500">
-                    <div className="text-3xl font-black text-dcBlue">
-                        Edit Profile
-                        <div className="text-base font-normal text-center mt-1 text-dcBlue">
-                            ...
-                        </div>
-                    </div>
-
-                    {/* onSubmit={handleEditProfileSubmit} */}
-                    <form className="flex flex-col gap-3 w-60" onSubmit={handleEditSubmit}>
-
-                        <input 
-                            type="file" id="file" className="hidden"
-                            name="profilePic" 
-                        />
-                        <label htmlFor="file" className="text-dcBlue flex flex-row gap-3 items-center justify-center">
-                            <MdOutlineAddPhotoAlternate className="text-4xl" />
-                            {/* <img src={editFields.photoURL} alt="" /> */}
-                            Upload a profile picture
-                        </label>
-                        
-                        <input 
-                            className="border-b p-2 mt-1 bg-lightWhite text-materialBlack"
-                            type="text"
-                            name="displayName" 
-                            value={editFields.displayName} 
-                            onChange={handleEditChange} 
-                        />
-                        
-                        <input 
-                            className="border-b p-2 mt-1 bg-lightWhite text-slate-400"
-                            type="text" readOnly="readonly"
-                            name="email" 
-                            value={currentUserProfile?.email}
-                        />
-                        
-                        <textarea
-                            className="border-b p-2 mt-1 bg-lightWhite text-materialBlack "
-                            maxLength="150" rows="3" id="about" placeholder=" Tell us about yourself"
-                            name="about" 
-                            value={editFields.about}
-                            onChange={handleEditChange}
-                            >
-                        </textarea> 
-                        <span className="text-slate-400 text-xs">{chars} Characters Remaining</span>
-
-                        {/* Submit edit profile button */}
-                        <input 
-                            className="flex rounded-md p-2 justify-center transition-all bg-dcBlue text-lightWhite"
-                            type="submit" 
-                            value="EDIT PROFILE"  
-                        />
-                    </form>
-                    <button
-                        className="flex rounded-md p-2 justify-center transition-all bg-dcBlue text-lightWhite"
-                        onClick={handleCancelEdit}
-                    >
-                        CANCEL</button>
+            {/* Navbar */}
+            <div className="flex flex-row items-center justify-between gap-3 text-lightWhite font-bold p-4">
+                <div className='flex gap-2 items-center font-bold text-xl'>
+                    <FaRocketchat />Chat
                 </div>
+                <div className='flex gap-2 items-center text-xl'>
+                    <Link to="/chatapp/userprofile" className="flex items-center">
+                        <img src={currentUser?.photoURL} alt="profile picture" className='w-9 h-9 object-cover rounded-full'/>
+                        <span>{currentUser?.displayName}</span>
+                    </Link>
+                    <MdLogout onClick={()=>signOut(auth)}/>
+                </div>
+            </div>
+            {/* Body/Content */}
+            <div className="flex justify-center items-center">
+            <div 
+            className="flex flex-col gap-6 justify-center items-center rounded-lg mx-3 p-8 bg-lightWhite filter shadow-2xl shadow-gray-500">
+                <div className="text-3xl font-black text-dcBlue">
+                    Edit Profile
+                    <div className="text-base font-normal text-center mt-1 text-dcBlue">
+                        ...
+                    </div>
+                </div>
+
+                <form className="flex flex-col gap-3 w-60" onSubmit={handleEditSubmit}>
+                    <input 
+                        type="file" id="file" className="hidden"
+                        name="profilePic" 
+                    />
+                    <label htmlFor="file" className="text-dcBlue flex flex-row gap-3 items-center justify-center">
+                        <MdOutlineAddPhotoAlternate className="text-4xl" />
+                        {/* <img src={editFields.photoURL} alt="" /> */}
+                        Upload a profile picture
+                    </label>
+                    
+                    <input 
+                        className="border-b p-2 mt-1 bg-lightWhite text-materialBlack"
+                        type="text"
+                        name="displayName" 
+                        value={editFields.displayName} 
+                        onChange={handleEditChange} 
+                    />
+                        
+                    <input 
+                        className="border-b p-2 mt-1 bg-lightWhite text-slate-400"
+                        type="text" readOnly="readonly"
+                        name="email" 
+                        value={currentUser?.email}
+                    />
+                    
+                    <textarea
+                        className="border-b p-2 mt-1 bg-lightWhite text-materialBlack "
+                        maxLength="150" rows="3" id="about" placeholder=" Tell us about yourself"
+                        name="about" 
+                        value={editFields.about}
+                        onChange={handleEditChange}
+                        ></textarea> 
+                    <span className="text-slate-400 text-xs">{chars} Characters Remaining.</span>
+
+                    {/* Submit edit profile button */}
+                    <input 
+                        className="flex rounded-md p-2 justify-center transition-all bg-dcBlue hover:bg-indigo-300 text-lightWhite font-medium focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:ring-offset-2"
+                        type="submit" 
+                        value="EDIT PROFILE"  
+                    />
+                    
+                    {/* Cancel editing button */}
+                    <button
+                        onClick={handleCancelEdit}
+                        className="inline-flex w-full justify-center rounded-md bg-gray-300 p-2 text-base font-medium text-gray-500 shadow-sm hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    >CANCEL</button>
+                </form>
+            </div>
+            </div>
         </div>
     )
 }
