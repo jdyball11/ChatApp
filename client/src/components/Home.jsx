@@ -16,8 +16,6 @@ const Home = () => {
     return (
         <div className="flex">
             <div>
-                <Navbar />
-                
                 <Sidebar />
             </div>
             <Chat />
