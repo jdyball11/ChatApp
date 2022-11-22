@@ -17,10 +17,8 @@ const Home = () => {
     return (
         <div className="flex">
             <div>
-                <Navbar />
-                
                 <Sidebar />
-                <Link to="/chatapp/profile" className="text-dcBlue">Edit Profile (For testing purpose)</Link>
+                {/* <Link to="/chatapp/profile" className="text-dcBlue">Edit Profile (For testing purpose)</Link> */}
             </div>
             <Chat />
             

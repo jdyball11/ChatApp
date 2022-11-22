@@ -10,9 +10,10 @@ export const AuthContextProvider = ({ children }) => {
         //authstatechanged will trigger the current user state once a connection with Firebase has been established.
         onAuthStateChanged(auth, (user) => {
             setCurrentUser(user)
-            console.log(user)
+            console.log("logged in reg", user)
         });
     }, []);
+    
     return (
         //passing logged in user: currentUser down to all routes(children) within authcontext provider
         <AuthContext.Provider value={{currentUser}}>
