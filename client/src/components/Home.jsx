@@ -5,10 +5,6 @@
 // import Messages from "./Messages";
 import Navbar from "./Navbar";
 import Search from "./Search";
-<<<<<<< HEAD
-=======
-import { Link } from "react-router-dom"
->>>>>>> main
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import Chats from "./Chats";
@@ -23,7 +19,6 @@ const Home = () => {
                 <Navbar />
                 
                 <Sidebar />
-                <Link to="/chatapp/profile" className="text-dcBlue">Edit Profile (For testing purpose)</Link>
             </div>
             <Chat />
         </div>
