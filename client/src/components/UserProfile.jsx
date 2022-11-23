@@ -50,13 +50,13 @@ const UserProfile = () => {
             {/* Navbar */}
             <div className="flex flex-row items-center justify-between gap-3 text-lightWhite font-bold p-4">
                 {/* Brand */}
-                <div className='flex gap-2 items-center font-bold text-xl'>
-                    <FaRocketchat />Chat
+                <div className='flex gap-2 items-center font-bold text-3xl'>
+                    <Link to="/chatapp/home"><FaRocketchat /></Link>
                 </div>
                 {/* User */}
                 <div className='flex gap-2 items-center text-xl'>
                     <Link to="/chatapp/userprofile" className="flex items-center">
-                        <img src={currentUser?.photoURL} alt="profile picture" className='w-9 h-9 object-cover rounded-full'/>
+                        <img src={currentUser?.photoURL} alt="profile picture" className='w-9 h-9 object-cover rounded-full mr-2'/>
                         <span>{currentUser?.displayName}</span>
                     </Link>
                     <MdLogout onClick={handleClickSignOut}/>

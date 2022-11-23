@@ -10,9 +10,15 @@ import { MdOutlineAddPhotoAlternate } from "react-icons/md"
 
 const Register = () => {
     const [error, setError] = useState(false)
+    const [imageSelected, setImageSelected] = useState(false)
     const [passwordError, setPasswordError] = useState('') // Password validation
     const [registerFields, setRegisterFields] = useState('')
     const navigate = useNavigate()
+
+    // handle if an image is selected
+    const handleSelectImage = (event) => {
+        setImageSelected(true)
+    }
 
     const handleRegisterChange = (event) => {
         const { name, value } = event.target
@@ -133,10 +139,11 @@ const Register = () => {
                                     </span>}
                                 {/* <input type="text" name="confirmPassword" value={registerFields.confirmPassword} onChange={handleRegisterChange} placeholder=" confirm password *"
                                 className="border-b p-2 mt-1 bg-lightWhite text-materialBlack" /> */}
-                                <input type="file" name="profilePic" id="file" className="hidden" />
-                                <label htmlFor="file" className="text-dcBlue flex flex-row gap-3 items-center justify-center">
+                                <input type="file" name="profilePic" id="file" className="hidden" onChange={handleSelectImage} />
+                                <label htmlFor="file" className={`${imageSelected ? "text-blue-900" : "text-dcBlue"} flex flex-row gap-3 items-center justify-center`}>
                                     <MdOutlineAddPhotoAlternate className="text-4xl" />
-                                    <span className="translate-y-0.5">Add a profile picture</span>
+                                    <span className="translate-y-0.5">{imageSelected ? "Profile Picture Ready" : "Upload a Profile Picture" }</span>
+                                   
                                 </label>
 
 
