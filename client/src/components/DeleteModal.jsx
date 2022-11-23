@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { useState, useContext } from "react"
 
-import { doc, getDoc, deleteDoc } from "firebase/firestore";
+import { doc, getDoc, collection, getDocs, deleteDoc, updateDoc } from "firebase/firestore";
 import { ref, deleteObject, listAll } from "firebase/storage";
 import { getAuth, deleteUser, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
 import { db, auth, storage } from "../Firebase-config"
@@ -70,6 +70,17 @@ const DeleteModal = ({visible, onClose}) => {
 
     const handleDeleteAccount = async () => {
         // grab the user.uid and check against chats' id, if deactivate then isActive= false
+        const querySnapshot = await getDocs(collection(db, "chats"));
+        console.log(querySnapshot)
+        querySnapshot.forEach( async (doc) => {
+            if (doc.id.includes(user.uid)) {
+                let docRef = doc(db, "chats", doc.id)
+                await updateDoc(docRef, {
+                    isActive: false
+                })
+                console.log(doc.data().isActive)
+            }
+        });
 
         try {
             // await Promise.all([deleteObject(photoRef), deleteDoc(doc(db, "users", user.uid)), deleteUser(user)])

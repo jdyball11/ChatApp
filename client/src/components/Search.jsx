@@ -43,7 +43,9 @@ const Search = () => {
             console.log(!res.exists())
             if (!res.exists()) {
                 // create a chat in chats collection in firestore with an id == combinedId
-                await setDoc(doc(db, "chats", combinedId), { isActive: true, messages: [] })
+                await setDoc(doc(db, "chats", combinedId), { isActive: true, participants:[
+                    user.uid, currentUser.uid
+                ], messages: [] })
                 // update the userChats collection
                 await updateDoc(doc(db, "userChats", currentUser.uid), {
                     // set the userInfo to contain the id, dName and photoURL of the other user (not current user*)
