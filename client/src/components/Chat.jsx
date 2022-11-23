@@ -11,18 +11,18 @@ const Chat = () => {
     console.log(data)
     return (
         // {chat}
-        <div className='w-full h-screen'> 
+        <div className='container grid grid-rows-auto h-screen'>
             {/* Chat Info */}
-              <div className='text-white h-20 w-full p-3 bg-dcBlue flex items-center justify-start gap-3 text-xl font-bold'> 
-                <div className="flex gap-5 flex items-center">
+            <div className='text-white w-full p-4 bg-dcBlue 
+            flex items-center justify-start gap-3 text-xl font-bold row-start-1 row-span-1'>
+                <div className="flex gap-5 items-center">
                     {/* {Icons / profilename } */}
                     <img src={data.user.photoURL} alt="profile picture" className='w-10 aspect-square object-cover rounded-lg' />
                     {data.user?.displayName}
-
-                </div>  
+                </div>
             </div>
-            <Messages />
-            <Input />
+            <Messages className="" />
+            <Input className=""/>
         </div>
     )
 }

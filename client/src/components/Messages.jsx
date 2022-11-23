@@ -31,7 +31,7 @@ const Messages = () => {
 
     return (
         // the messages
-        <div className='flex flex-col gap-5 p-3 h-screen overflow-auto'>
+        <div className='flex flex-col gap-5 p-3 overflow-auto h-full'>
             {messages.map((message) => (
                 <Message message={message} key={message.id} />
             ))}

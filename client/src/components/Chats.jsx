@@ -29,6 +29,8 @@ const Chats = () => {
         dispatch({ type: ACTIONS.CHANGE_USER, payload: u })
     }
 
+    
+
     return (
         // chats
         <div>
@@ -41,8 +43,8 @@ const Chats = () => {
                     <img src={chat[1].userInfo.photoURL} alt="profile picture"
                         className="w-16 aspect-square object-cover rounded-full" />
                     <div className='text-dcBlue'>
-                        <div className='text-2xl font-bold'>{chat[1].userInfo.displayName}</div>
-                        <p>{chat[1].lastMessage?.text}</p>
+                        <div className='text-lg font-bold'>{chat[1].userInfo.displayName}</div>
+                        <p>{chat[1].lastMessage?.text.slice(0, 20)}</p>
                     </div>
                 </div>
             ))}

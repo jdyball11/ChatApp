@@ -15,9 +15,9 @@ const Home = () => {
     const { currentUser } = useContext(AuthContext)
     return (
         <div className="flex">
-            <div>
-                <Sidebar />
-            </div>
+
+            <Sidebar />
+
             <Chat />
         </div>
 
