@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, browserSessionPersistence, setPersistence } from "firebase/auth";
 import { auth } from "../Firebase-config"
 import { getAuth } from "firebase/auth"
 import { FaRocketchat } from "react-icons/fa"
@@ -28,21 +28,19 @@ const Login = () => {
         event.preventDefault()
         const email = event.target[0].value
         const password = event.target[1].value
-
-        try {
-            await signInWithEmailAndPassword(auth, email, password)
-            // User logged in
-            
-            setError(false)
-            navigate('/chatapp/home')
-            
-
-        } catch (error) {
-            setError(true)
-            console.log('Sign In Error:', error.message)
-        }
-
-
+         // User logged in
+            setPersistence(auth, browserSessionPersistence).then(() => {
+                signInWithEmailAndPassword(auth, email, password)    
+                    .then(() => {
+                        setError(false)
+                        navigate('/chatapp/home')
+            }) 
+            .catch ((error) => {
+                setError(true)
+                console.log('Sign In Error:', error.message)
+            })
+      
+        })
     }
     
 
