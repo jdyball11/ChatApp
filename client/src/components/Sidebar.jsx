@@ -5,7 +5,7 @@ import Navbar from "./Navbar"
 const Sidebar = () => {
 
     return (
-        <div className="grid h-screen bg-grey grid-rows-auto">
+        <div className="grid h-screen bg-dcBlue grid-rows-sideBarLayout">
         <Navbar />
         <Search />  
         <Contacts />

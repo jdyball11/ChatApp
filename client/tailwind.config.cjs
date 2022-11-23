@@ -12,7 +12,8 @@ module.exports = {
         dcBlue: '#7289da'
       },
       gridTemplateRows: {
-        'chatLayout': '72px 1fr auto'
+        'chatLayout': '72px 1fr auto',
+        'sideBarLayout': '72px auto 1fr'
       }
     },
   },

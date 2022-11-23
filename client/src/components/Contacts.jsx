@@ -25,15 +25,9 @@ const Contacts = () => {
     }, [currentUser.uid])
     console.log(ACTIONS.CHANGE_USER)
 
-    const handleSelect = (u) => {
-        dispatch({ type: ACTIONS.CHANGE_USER, payload: u })
-    }
-
-
-
     return (
         // chats
-        <div className='overflow-scroll bg-dcBlue'>
+        <div className='overflow-auto bg-dcBlue w-full flex-col'>
             {/* Object.entries(obj) return the key, value pair of the object as key: value in an array */}
             {/* also, need to make sure chats is available before running the sort and map */}
             {chats && Object.entries(chats)?.sort((a, b) => b[1].date - a[1].date).map((chat) => (

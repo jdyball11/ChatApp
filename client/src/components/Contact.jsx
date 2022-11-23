@@ -19,7 +19,7 @@ const Contact = ({ chat }) => {
     }
     return (
         <div key={chat[0]} onClick={() => handleSelect(chat[1].userInfo)}
-            className="flex items-center p-4 gap-4">
+            className="flex items-center p-4 gap-4 w-full">
             <img src={imgSrc} onError={handleError} alt="profile picture"
                 className="w-16 aspect-square object-cover rounded-full text-lightWhite" />
             <div className='text-lightWhite'>

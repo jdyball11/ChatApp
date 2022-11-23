@@ -19,7 +19,7 @@ const Chat = () => {
       setImgSrc(data.user.photoURL)
     }, [data.user.photoURL])
     
-    const handleError = () => setImgSrc("https://upload.wikimedia.org/wikipedia/commons/c/ce/Example_image.png");
+    const handleError = () => setImgSrc("/xmark-solid.svg");
 
     // <img src={imgSrc} onError={handleError} />
 
@@ -29,7 +29,7 @@ const Chat = () => {
 
     return (
         // {chat}
-        <div className='container grid grid-rows-chatLayout h-screen'>
+        <div className='container grid grid-rows-chatLayout h-screen flex'>
             {/* Chat Info */}
             <div className='text-white w-full p-4 bg-dcBlue 
             flex items-center justify-start gap-3 text-xl font-bold row-start-1 row-span-1'>
