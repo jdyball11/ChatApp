@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { ChatContext } from '../contexts/ChatContext'
 import { MdSend } from "react-icons/md"
 import { FaPlus } from "react-icons/fa"
 import { AuthContext } from '../contexts/AuthContext'
-import { arrayUnion, doc, updateDoc, Timestamp, serverTimestamp } from 'firebase/firestore'
+import { arrayUnion, doc, updateDoc, Timestamp, serverTimestamp, onSnapshot } from 'firebase/firestore'
 import { db, storage } from '../Firebase-config'
 import { v4 as uuidv4 } from 'uuid'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
@@ -13,9 +13,27 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 const Input = () => {
     const [text, setText] = useState("")
     const [img, setImg] = useState(null)
+    const [chatActive, setChatActive] = useState(false)
 
     const { currentUser } = useContext(AuthContext)
     const { data } = useContext(ChatContext)
+
+    useEffect(() => {
+        // remember to wrap the useEffect in a function with condition to make sure it only runs 
+        // when the third variable, in this case data.chatId is available
+        const checkActive = () => {
+            const unsub = onSnapshot(doc(db, "chats", data.chatId), (doc) => {
+                // setMessages with doc.data() if a chat alreayd exists
+                doc.exists() && setChatActive(doc.data().isActive)
+            });
+            return () => {
+                unsub();
+            }
+        };
+        data.chatId && checkActive()
+    }, [data.chatId]);
+
+    console.log(chatActive)
 
     const handleSend = async () => {
         if (img) {
@@ -77,17 +95,17 @@ const Input = () => {
 
     return (
         <div className='flex text-xl items-center gap-3 border-t-2 p-2'>
-            <input type="file" id="file" onChange={event => setImg(event.target.files[0])}
+            <input disabled={!chatActive} type="file" id="file" onChange={event => setImg(event.target.files[0])}
                 className="hidden" />
             <label htmlFor='file' className=''><FaPlus className='bg-dcBlue text-[#fafafa] p-1 rounded-full w-6 h-6' /></label>
 
             {/* text field for message */}
-            <input type="text" onKeyDown={handleEnter}
+            <input disabled={!chatActive} type="text" onKeyDown={handleEnter}
                 placeholder={data.user.displayName && 'Message ' + data.user.displayName}
                 onChange={event => setText(event.target.value)} value={text}
                 className="flex-grow p-2 bg-[#fafafa]" />
             {/* Send button */}
-            <MdSend onClick={handleSend} />
+            {chatActive && <MdSend onClick={handleSend} />}
 
         </div>
     )
