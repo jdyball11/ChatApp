@@ -91,7 +91,8 @@ const EditProfile = () => {
             file = event.target[0].files[0]
             console.log("Image file: ", event.target[0].files[0])
             try {
-                const storageRef = ref(storage, currentUser.uid);
+                const date = new Date().getTime()
+                const storageRef = ref(storage, `images/${res.user.uid}/${displayName + date}`);
                 const uploadTask = uploadBytesResumable(storageRef, file);
     
                 uploadTask.on(
