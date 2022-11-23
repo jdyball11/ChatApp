@@ -4,9 +4,7 @@ import { MdOutlineAddPhotoAlternate } from "react-icons/md"
 import { FaRocketchat } from 'react-icons/fa'
 import { MdLogout } from 'react-icons/md'
 
-import { onAuthStateChanged } from "firebase/auth";
-
-import { updateProfile } from "firebase/auth";
+import { updateProfile, signOut } from "firebase/auth";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage, db, auth } from "../Firebase-config"
 import { doc, getDoc, updateDoc } from "firebase/firestore";
@@ -62,6 +60,11 @@ const EditProfile = () => {
     // handle cancel profile edit button
     const handleCancelEdit = () => {
         navigate('/chatapp/home')
+    }
+
+    const handleClickSignOut = () => {
+        signOut(auth)
+        navigate('/chatapp/login')
     }
 
     // handle form submit
@@ -145,7 +148,7 @@ const EditProfile = () => {
                         <img src={currentUser?.photoURL} alt="profile picture" className='w-9 h-9 object-cover rounded-full'/>
                         <span>{currentUser?.displayName}</span>
                     </Link>
-                    <MdLogout onClick={()=>signOut(auth)}/>
+                    <MdLogout onClick={handleClickSignOut}/>
                 </div>
             </div>
             {/* Body/Content */}

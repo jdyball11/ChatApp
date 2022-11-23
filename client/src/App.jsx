@@ -1,6 +1,7 @@
 import Navbar from "./components/Navbar"
 import Login from "./components/Login"
 import Register from "./components/Register"
+import ForTesting from "./components/ForTesting"
 import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom'
 import { useContext } from "react"
 import Home from "./components/Home"
@@ -41,6 +42,7 @@ function App() {
               {/* login page */}
               <Route path='login' element={<Login />} />            
               <Route path='userprofile' element={<UserProfile />} />          
+              <Route path='testing' element={<ForTesting />} />          
             </Route>
           </Routes>
         </BrowserRouter>

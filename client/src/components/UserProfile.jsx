@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from 'react';
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { signOut } from 'firebase/auth'
 import { FaRocketchat } from 'react-icons/fa'
 import { MdLogout } from 'react-icons/md'
@@ -16,7 +16,9 @@ import DeleteModal from "./DeleteModal"
 const UserProfile = () => {
     const {currentUser} = useContext(AuthContext)
     const [userAbout, setUserAbout] = useState("") 
-    const [showModal, setShowModal] = useState(false)    
+    const [showModal, setShowModal] = useState(false)
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         const getUserCol = async () =>{
@@ -37,6 +39,11 @@ const UserProfile = () => {
         setShowModal(false)
     }
 
+    const handleClickSignOut = () => {
+        signOut(auth)
+        navigate('/chatapp/login')
+    }
+
     return (
         <>
         <div className="flex flex-col gap-12 bg-dcBlue h-screen">
@@ -52,7 +59,7 @@ const UserProfile = () => {
                         <img src={currentUser?.photoURL} alt="profile picture" className='w-9 h-9 object-cover rounded-full'/>
                         <span>{currentUser?.displayName}</span>
                     </Link>
-                    <MdLogout onClick={()=>signOut(auth)}/>
+                    <MdLogout onClick={handleClickSignOut}/>
                 </div>
             </div>
             
@@ -61,11 +68,11 @@ const UserProfile = () => {
             <div className="flex flex-col gap-6 justify-center items-center rounded-lg mx-3 p-6 bg-lightWhite filter shadow-2xl shadow-gray-500 w-fit">
                 <div className="flex justify-between relative">
                     <Link to="/chatapp/profile" className="absolute right-0 flex justify-center items-center text-dcBlue text-2xl w-fit h-fit p-2 rounded-full hover:bg-gray-300"><FiEdit2 /></Link>
-                    <img src={currentUser?.photoURL} alt={currentUser.displayName} className="w-80 h-80 rounded-full m-auto object-cover" />
+                    <img src={currentUser?.photoURL} alt={currentUser?.displayName} className="w-80 h-80 rounded-full m-auto object-cover" />
                 </div>
                 <div className="flex flex-col items-start gap-y-2">
-                    <p className="text-dcBlue text-xl">Display Name: <span className="text-materialBlack">{currentUser.displayName}</span></p>
-                    <p className="text-dcBlue text-xl">Email Address: <span className="text-materialBlack">{currentUser.email}</span></p>
+                    <p className="text-dcBlue text-xl">Display Name: <span className="text-materialBlack">{currentUser?.displayName}</span></p>
+                    <p className="text-dcBlue text-xl">Email Address: <span className="text-materialBlack">{currentUser?.email}</span></p>
                     <p className="text-dcBlue text-xl max-w-sm">About: <span className="text-materialBlack">{userAbout ? userAbout : "..."}</span></p>
                     <p className="text-dcBlue text-xl">Status: <span className="text-materialBlack">Online/Away/Busy/Invisible</span></p>
                     <p className="text-dcBlue text-xl">Theme Mode: <span className="text-materialBlack">toggle: dark/light</span></p>
