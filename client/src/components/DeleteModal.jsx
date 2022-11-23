@@ -49,12 +49,12 @@ const DeleteModal = ({visible, onClose}) => {
                 // console.log("try block - currentuser: ", user)
 
                 const email = user.email
-
-                const credential = await EmailAuthProvider.credential(
+                
+                const credential = promptForCredentials(
                     email,
                     event.target.authPassword.value
                 );
-                console.log("try block - credential", credential)
+                //console.log("try block - credential", credential)
                 await reauthenticateWithCredential(user, credential);
                 console.log("successfully reauthenticated");
                 setNeedAuth(false)
