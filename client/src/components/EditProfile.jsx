@@ -16,6 +16,7 @@ import { AuthContext } from "../contexts/AuthContext";
 const EditProfile = () => {
     const [editFields, setEditFields] = useState({})
     const [error, setError] = useState(false)
+    const [imageSelected, setImageSelected] = useState(false)
     const [chars, setChars] = useState(150)
     const currentUserColRef = useRef()
     const {currentUser, setCurrentUser} = useContext(AuthContext)
@@ -57,11 +58,17 @@ const EditProfile = () => {
         })
     }
 
+    // handle if an image is selected
+    const handleSelectImage = (event) => {
+        setImageSelected(true)
+    }
+
     // handle cancel profile edit button
     const handleCancelEdit = () => {
         navigate('/chatapp/home')
     }
 
+    // sign out button
     const handleClickSignOut = () => {
         signOut(auth)
         navigate('/chatapp/login')
@@ -140,21 +147,22 @@ const EditProfile = () => {
         <div className="flex flex-col gap-12 bg-dcBlue h-screen">
             {/* Navbar */}
             <div className="flex flex-row items-center justify-between gap-3 text-lightWhite font-bold p-4">
-                <div className='flex gap-2 items-center font-bold text-xl'>
-                    <FaRocketchat />Chat
+                <div className='flex gap-2 items-center font-bold text-3xl'>
+                    <Link to="/chatapp/home"><FaRocketchat /></Link>
                 </div>
                 <div className='flex gap-2 items-center text-xl'>
                     <Link to="/chatapp/userprofile" className="flex items-center">
-                        <img src={currentUser?.photoURL} alt="profile picture" className='w-9 h-9 object-cover rounded-full'/>
+                        <img src={currentUser?.photoURL} alt="profile picture" className='w-9 h-9 object-cover rounded-full mr-2'/>
                         <span>{currentUser?.displayName}</span>
                     </Link>
                     <MdLogout onClick={handleClickSignOut}/>
                 </div>
             </div>
+
             {/* Body/Content */}
             <div className="flex justify-center items-center">
             <div 
-            className="flex flex-col gap-6 justify-center items-center rounded-lg mx-3 p-8 bg-lightWhite filter shadow-2xl shadow-gray-500">
+            className="flex flex-col gap-6 justify-center items-center rounded-lg mx-3 p-8 bg-lightWhite filter shadow-2xl shadow-gray-500 w-80">
                 <div className="text-3xl font-black text-dcBlue">
                     Edit Profile
                     <div className="text-base font-normal text-center mt-1 text-dcBlue">
@@ -162,15 +170,16 @@ const EditProfile = () => {
                     </div>
                 </div>
 
-                <form className="flex flex-col gap-3 w-60" onSubmit={handleEditSubmit}>
+                <form className="flex flex-col gap-3 w-70" onSubmit={handleEditSubmit}>
                     <input 
                         type="file" id="file" className="hidden"
                         name="profilePic" 
+                        onChange={handleSelectImage}
                     />
-                    <label htmlFor="file" className="text-dcBlue flex flex-row gap-3 items-center justify-center">
+                    <label htmlFor="file" className={`text-sm flex flex-row gap-3 items-center justify-center ${imageSelected ? "text-blue-900" : "text-dcBlue"}`} >
                         <MdOutlineAddPhotoAlternate className="text-4xl" />
                         {/* <img src={editFields.photoURL} alt="" /> */}
-                        Upload a profile picture
+                        {imageSelected ? "New Profile Picture is Ready to be Uploaded" : "Upload a New Profile Picture" }
                     </label>
                     
                     <input 
