@@ -7,22 +7,21 @@ import Navbar from "./Navbar";
 import Search from "./Search";
 import { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import Chats from "./Contacts";
+import Contacts from "./Contacts";
 import Chat from "./Chat";
 import Sidebar from "./Sidebar";
+import { FaRocketchat } from "react-icons/fa";
 
 const Home = () => {
     const { currentUser } = useContext(AuthContext)
-    const [ sideBarOn, setSideBarOn ] = useState(false)
-    const handleSetSideBar = (sidebarToggle) => {
-        setSideBarOn(sidebarToggle)
-    }
+    
     return (
-        <div className="grid grid-cols-[300px_auto] transition-all overflow-x-hidden">
+        <div className="grid transition-all overflow-x-hidden relative
+        sm:grid-cols-[300px_auto]">
 
-            {sideBarOn && <Sidebar className="z-10 fixed w-[300px] transition-all" handleSetSideBar={handleSetSideBar}/>}
+            <Sidebar className="z-10 fixed " />
 
-            <Chat handleSetSideBar={handleSetSideBar}/>
+            <Chat />
         </div>
 
     )

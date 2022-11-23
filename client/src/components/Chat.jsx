@@ -3,14 +3,18 @@ import { ChatContext } from '../contexts/ChatContext'
 import { useContext } from 'react'
 import Messages from './Messages'
 import Input from './Input'
-import { useImage } from 'react-image'
 import { FaRocketchat } from 'react-icons/fa'
+import Navbar from './Navbar'
+import Search from './Search'
+import Contacts from './Contacts'
 
 
 
 const Chat = ({ handleSetSideBar }) => {
     // access the data:state in ChatContext
     const { data } = useContext(ChatContext)
+    const [chatActive, setChatActive] = useState(true)
+    const [sidebarShow, setSidebarShow] = useState(false)
 
     const [imgSrc, setImgSrc] = useState(data.user.photoURL);
     // console.log("data.user.photoURL", data.user.photoURL)
@@ -21,28 +25,39 @@ const Chat = ({ handleSetSideBar }) => {
     }, [data.user.photoURL])
 
     const handleError = () => setImgSrc("/xmark-solid.svg");
-    const handleNavClick = () => {
-        handleSetSideBar(true)
-
+    const handleSidebarShow = (bool) => {
+        setSidebarShow(bool)
     }
+
+    
 
     return (
         // {chat}
-        <div className='container grid grid-rows-chatLayout h-screen'>
+        <div className='container grid grid-rows-chatLayout h-screen transition-all
+        sm:grid-cols-1'>
+            <FaRocketchat className='absolute text-lightWhite text-3xl translate-x-4 translate-y-5 peer' onClick={()=>setSidebarShow(true)} />
+            {/* mobile sidebar */}
+            <div id="mobileSidebar" className={`h-screen ${!sidebarShow && 'hidden'} fixed w-[300px] bg-dcBlue 
+            grid-rows-sideBarLayout transition-all
+        sm:hidden`}>
+                <Navbar handleSidebarShow={handleSidebarShow}/>
+                <Search />
+                <Contacts handleSidebarShow={handleSidebarShow} />
+            </div>
             {/* Chat Info */}
-            <div className='text-white w-screen p-4 bg-dcBlue 
-            flex items-center justify-start gap-3 text-xl font-bold row-start-1 row-span-1
-            sm:w-full'>
-                <div className="flex w-full gap-5 items-center justify-between">
+            <div className='text-white p-4 bg-dcBlue 
+            flex items-center justify-start gap-3 text-xl font-bold col-starts-2 col-span-1 '>
+                <div className="flex w-full gap-5 items-center justify-end">
                     {/* navicon */}
-                    <div>
+                    {/* <div>
                         <FaRocketchat className='sm:hidden' onClick={handleNavClick} />
-                    </div>
+                    </div> */}
                     {/* {Icons / profilename } */}
                     <div className='flex-row flex items-center gap-3'>
+                        {data.user?.displayName}
                         {data.user.photoURL ? (<img src={imgSrc} onError={handleError} alt="profile picture"
                             className='w-10 aspect-square object-cover rounded-lg' />) : <div>Click on a user to start chatting!</div>}
-                        {data.user?.displayName}
+
                     </div>
 
                 </div>

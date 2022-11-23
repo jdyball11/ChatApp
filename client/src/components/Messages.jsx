@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react'
 import Message from './Message'
 import { ChatContext } from '../contexts/ChatContext'
-import { collection, doc, onSnapshot } from 'firebase/firestore'
+import { doc, onSnapshot } from 'firebase/firestore'
 import { db } from '../Firebase-config'
 
 
@@ -9,6 +9,7 @@ const Messages = () => {
     const [messages, setMessages] = useState([])
     // access the data:state in ChatContext
     const { data } = useContext(ChatContext)
+    
 
     useEffect(() => {
         // remember to wrap the useEffect in a function with condition to make sure it only runs 
@@ -27,7 +28,7 @@ const Messages = () => {
 
     return (
         // the messages
-        <div className='flex flex-col gap-5 p-3 overflow-auto h-full'>
+        <div className='flex flex-col gap-5 p-3 overflow-y-scroll overflow-x-hidden h-full'>
             {messages.map((message) => (
                 <Message message={message} key={message.id} />
             ))}

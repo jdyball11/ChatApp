@@ -7,14 +7,14 @@ import { AuthContext } from '../contexts/AuthContext'
 import { Link } from "react-router-dom"
 
 
-const Navbar = () => {
+const Navbar = ({handleSidebarShow}) => {
     const { currentUser } = useContext(AuthContext)
     return (
         <div className="flex flex-row items-center justify-between gap-3 
         bg-blue-900 text-lightWhite p-4">
             {/* Brand */}
-            <div className='flex gap-2 items-center font-bold text-xl'>
-                <FaRocketchat />
+            <div className='flex gap-2 items-center font-bold text-3xl'>
+                <FaRocketchat onClick={()=>handleSidebarShow(false)}/>
             </div>
             {/* User */}
             <div className='flex gap-2 items-center text-xl font-bold'>

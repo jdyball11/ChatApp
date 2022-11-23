@@ -6,7 +6,7 @@ const Sidebar = ({handleSetSideBar}) => {
 
     return (
         <div className="h-screen w-[300px] bg-dcBlue grid-rows-sideBarLayout
-        sm:grid">
+        sm:grid hidden">
         <Navbar />
         <Search />  
         <Contacts handleSetSideBar={handleSetSideBar}/>
