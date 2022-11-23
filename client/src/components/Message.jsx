@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
 import { ChatContext } from '../contexts/ChatContext'
 import { Timestamp } from 'firebase/firestore'
@@ -8,6 +8,15 @@ const Message = ({ message }) => {
     const { currentUser } = useContext(AuthContext)
     const { data } = useContext(ChatContext)
     // console.log(message)
+    const [imgSrc, setImgSrc] = useState(data.user.photoURL);
+    // console.log("data.user.photoURL", data.user.photoURL)
+    console.log("imgSrc", imgSrc)
+
+    useEffect(() => {
+        setImgSrc(data.user.photoURL)
+    }, [data.user.photoURL])
+
+    const handleError = () => setImgSrc("/xmark-solid.svg");
 
     const ref = useRef()
 
@@ -52,7 +61,7 @@ const Message = ({ message }) => {
             {message.senderId === data.user.uid && <div className='border-dcBlue flex justify-start gap-3'>
                 {/* profile picture */}
                 <div className='flex flex-col'>
-                    <img src={data.user.photoURL} alt="profile picture"
+                    <img src={imgSrc} alt="profile picture" onError={handleError}
                         className='w-12 aspect-square rounded-full object-cover' />
                 </div>
                 {/* message body */}

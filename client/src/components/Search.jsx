@@ -74,11 +74,11 @@ const Search = () => {
 
     return (
 
-        <div>
+        <div className="border-b-2 text-lightWhite">
             {/* the search form */}
-            <div className="border-b-2 bg-grey">
-                <div className="p-2 ">
-                    <input className="bg-transparent b-none text-black outline-0 p-1" type="text"
+            <div className=" bg-dcBlue">
+                <div className="p-2 text-lightWhite">
+                    <input className="bg-transparent text-lightWhite outline-0 p-1 placeholder:text-lightWhite" type="text"
                         placeholder="Search Friend"
                         onKeyDown={handleEnter}
                         onChange={event => setUsername(event.target.value)}

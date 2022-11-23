@@ -1,14 +1,14 @@
 import Search from "./Search"
-import Chats from "./Chats"
+import Contacts from "./Contacts"
 import Navbar from "./Navbar"
 
 const Sidebar = () => {
 
     return (
-        <div className="flex-col w-96 h-screen border-r-2 bg-grey grid-rows-auto">
+        <div className="grid h-screen bg-dcBlue grid-rows-sideBarLayout">
         <Navbar />
         <Search />  
-        <Chats />
+        <Contacts />
         </div>
     )
 }
