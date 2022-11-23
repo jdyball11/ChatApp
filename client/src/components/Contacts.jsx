@@ -5,7 +5,7 @@ import { doc, onSnapshot } from 'firebase/firestore'
 import { ChatContext } from '../contexts/ChatContext'
 import Contact from './Contact'
 
-const Contacts = ({handleSetSideBar}) => {
+const Contacts = ({handleSidebarShow}) => {
     const [chats, setChats] = useState([])
     const [userImg, setUserImg] = useState(false)
     const { currentUser } = useContext(AuthContext)
@@ -31,7 +31,7 @@ const Contacts = ({handleSetSideBar}) => {
             {/* also, need to make sure chats is available before running the sort and map */}
             {chats && Object.entries(chats)?.sort((a, b) => b[1].date - a[1].date).map((chat) => (
                 // individual chat box
-                <Contact chat={chat} handleSetSideBar={handleSetSideBar}/>
+                <Contact chat={chat} handleSidebarShow={handleSidebarShow}/>
                 // <div key={chat[0]} onClick={() => handleSelect(chat[1].userInfo)}
                 //     className="flex items-center p-4 gap-4">
                 //     <img src={chat[1].userInfo.photoURL} alt="profile picture"

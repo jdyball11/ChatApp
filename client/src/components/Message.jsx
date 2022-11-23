@@ -34,8 +34,6 @@ const Message = ({ message }) => {
     }
     const messageTime = convertDate(message.date.seconds)
 
-
-
     return (
         <>
             {message.senderId === currentUser.uid && <div className='border-dcBlue flex justify-end gap-3'>
@@ -50,7 +48,7 @@ const Message = ({ message }) => {
                         <div className='font-bold'>{currentUser.displayName}</div>
                         <div>{messageTime}</div>
                     </div>
-                    <div className='bg-dcBlue py-2 px-3 text-white rounded-xl flex flex-wrap 
+                    <div className='bg-dcBlue py-2 px-3 text-white rounded-xl flex flex-wrap break-all
                     max-w-xs'>{message.text}</div>
                     {message.img && <img src={message.img} className="max-w-xs"/>}
                 </div>
@@ -69,7 +67,7 @@ const Message = ({ message }) => {
                         <div className='font-bold'>{data.user.displayName}</div>
                         <div>{messageTime}</div>
                     </div>
-                    <div className='bg-blue-300 py-2 px-3 text-white rounded-xl flex flex-wrap'>{message.text}</div>
+                    <div className='bg-blue-300 py-2 px-3 text-white rounded-xl flex flex-wrap break-all'>{message.text}</div>
                     {message.img && <img src={message.img} className="w-20" />}
                 </div>
 

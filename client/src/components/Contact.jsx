@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
 import { ChatContext } from '../contexts/ChatContext'
 
-const Contact = ({ chat, handleSetSideBar }) => {
+const Contact = ({ chat, handleSidebarShow }) => {
     const { dispatch, ACTIONS } = useContext(ChatContext)
     const [imgSrc, setImgSrc] = useState(chat[1].userInfo.photoURL);
     // console.log("data.user.photoURL", data.user.photoURL)
@@ -16,7 +16,7 @@ const Contact = ({ chat, handleSetSideBar }) => {
 
     const handleSelect = (u) => {
         dispatch({ type: ACTIONS.CHANGE_USER, payload: u })
-        handleSetSideBar(false)
+        handleSidebarShow(false)
     }
     return (
         <div key={chat[0]} onClick={() => handleSelect(chat[1].userInfo)}
