@@ -4,40 +4,47 @@ import { useContext } from 'react'
 import Messages from './Messages'
 import Input from './Input'
 import { useImage } from 'react-image'
+import { FaRocketchat } from 'react-icons/fa'
 
 
 
-const Chat = () => {
+const Chat = ({ handleSetSideBar }) => {
     // access the data:state in ChatContext
     const { data } = useContext(ChatContext)
 
     const [imgSrc, setImgSrc] = useState(data.user.photoURL);
-    console.log("data.user.photoURL", data.user.photoURL)
-    console.log("imgSrc", imgSrc)
+    // console.log("data.user.photoURL", data.user.photoURL)
+    // console.log("imgSrc", imgSrc)
 
     useEffect(() => {
-      setImgSrc(data.user.photoURL)
+        setImgSrc(data.user.photoURL)
     }, [data.user.photoURL])
-    
+
     const handleError = () => setImgSrc("/xmark-solid.svg");
+    const handleNavClick = () => {
+        handleSetSideBar(true)
 
-    // <img src={imgSrc} onError={handleError} />
-
-
-    console.log(data)
-    
+    }
 
     return (
         // {chat}
-        <div className='container grid grid-rows-chatLayout h-screen flex'>
+        <div className='container grid grid-rows-chatLayout h-screen'>
             {/* Chat Info */}
-            <div className='text-white w-full p-4 bg-dcBlue 
-            flex items-center justify-start gap-3 text-xl font-bold row-start-1 row-span-1'>
-                <div className="flex gap-5 items-center">
+            <div className='text-white w-screen p-4 bg-dcBlue 
+            flex items-center justify-start gap-3 text-xl font-bold row-start-1 row-span-1
+            sm:w-full'>
+                <div className="flex w-full gap-5 items-center justify-between">
+                    {/* navicon */}
+                    <div>
+                        <FaRocketchat className='sm:hidden' onClick={handleNavClick} />
+                    </div>
                     {/* {Icons / profilename } */}
-                    {data.user.photoURL ? (<img src={imgSrc} onError={handleError} alt="profile picture"
-                        className='w-10 aspect-square object-cover rounded-lg' />) : <div>Click on a user to start chatting!</div>}
-                    {data.user?.displayName}
+                    <div className='flex-row flex items-center gap-3'>
+                        {data.user.photoURL ? (<img src={imgSrc} onError={handleError} alt="profile picture"
+                            className='w-10 aspect-square object-cover rounded-lg' />) : <div>Click on a user to start chatting!</div>}
+                        {data.user?.displayName}
+                    </div>
+
                 </div>
             </div>
             <Messages className="" />

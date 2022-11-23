@@ -10,7 +10,7 @@ const Message = ({ message }) => {
     // console.log(message)
     const [imgSrc, setImgSrc] = useState(data.user.photoURL);
     // console.log("data.user.photoURL", data.user.photoURL)
-    console.log("imgSrc", imgSrc)
+    // console.log("imgSrc", imgSrc)
 
     useEffect(() => {
         setImgSrc(data.user.photoURL)
@@ -38,7 +38,6 @@ const Message = ({ message }) => {
 
     return (
         <>
-
             {message.senderId === currentUser.uid && <div className='border-dcBlue flex justify-end gap-3'>
                 {/* profile picture */}
                 <div className='flex flex-col'>

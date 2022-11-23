@@ -2,13 +2,14 @@ import Search from "./Search"
 import Contacts from "./Contacts"
 import Navbar from "./Navbar"
 
-const Sidebar = () => {
+const Sidebar = ({handleSetSideBar}) => {
 
     return (
-        <div className="grid h-screen bg-dcBlue grid-rows-sideBarLayout">
+        <div className="h-screen w-[300px] bg-dcBlue grid-rows-sideBarLayout
+        sm:grid">
         <Navbar />
         <Search />  
-        <Contacts />
+        <Contacts handleSetSideBar={handleSetSideBar}/>
         </div>
     )
 }

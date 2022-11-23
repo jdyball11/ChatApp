@@ -10,8 +10,6 @@ const Messages = () => {
     // access the data:state in ChatContext
     const { data } = useContext(ChatContext)
 
-    console.log(data)
-
     useEffect(() => {
         // remember to wrap the useEffect in a function with condition to make sure it only runs 
         // when the third variable, in this case data.chatId is available
@@ -26,8 +24,6 @@ const Messages = () => {
         };
         data.chatId && getMessages()
     }, [data.chatId]);
-
-    console.log(messages)
 
     return (
         // the messages

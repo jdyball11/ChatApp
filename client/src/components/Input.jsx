@@ -83,7 +83,7 @@ const Input = () => {
 
             {/* text field for message */}
             <input type="text" onKeyDown={handleEnter}
-                placeholder={'Message ' + data.user.displayName}
+                placeholder={data.user.displayName && 'Message ' + data.user.displayName}
                 onChange={event => setText(event.target.value)} value={text}
                 className="flex-grow p-2 bg-[#fafafa]" />
             {/* Send button */}
