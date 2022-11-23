@@ -2,8 +2,8 @@ import { useNavigate } from "react-router-dom"
 import { useState, useContext } from "react"
 
 import { doc, getDoc, deleteDoc } from "firebase/firestore";
-import { ref, deleteObject } from "firebase/storage";
-import { deleteUser, reauthenticateWithCredential } from "firebase/auth";
+import { ref, deleteObject, listAll } from "firebase/storage";
+import { getAuth, deleteUser, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
 import { db, auth, storage } from "../Firebase-config"
 
 import { AuthContext } from "../contexts/AuthContext";
@@ -14,7 +14,7 @@ const DeleteModal = ({visible, onClose}) => {
     const navigate = useNavigate()
     
     const user = useContext(AuthContext).currentUser
-    const photoRef = ref(storage, user?.uid)
+    // const photoRef = ref(storage, `images/${user.uid}`) // image name that include uid? - extra, delete later?
 
     if (!visible){
         return null
@@ -26,13 +26,67 @@ const DeleteModal = ({visible, onClose}) => {
             onClose()
         }
     }
+    // Delete folder in Storage
+    async function deleteFolder() {
+        const folderRef = ref(storage, `images/${user.uid}`)
+        const fileList = await listAll(folderRef)
+        const promises = []
+        for(let item of fileList.items) {
+            promises.push(deleteObject(item))
+        }
+        const result = await Promise.all(promises)
+        return result
+    }
 
     const handleDeleteAccount = async () => {
         // reauthentication
-        // const credential = promptForCredentials()
-        // await reauthenticateWithCredential(user, credential)
+        const reauthenticate = async () => {
+            try {
+                const auth = getAuth();
+                console.log("try block - auth: ", auth)
+                const user = auth.currentUser;
+                console.log("try block - currentuser: ", user)
+
+                const email = user.email
+                const password = "123456"
+
+                const credential = await EmailAuthProvider.credential(
+                    email,
+                    password
+                );
+                console.log("try block - credential", credential)
+                await reauthenticateWithCredential(user, credential);
+                console.log("successfully reauthenticated");
+                return true
+            } catch (e) {
+                console.log("Credential: ",e);
+                return null
+            }
+        }
+        const authRes = reauthenticate()
+        console.log("authres: ", await authRes)
+
         try {
-            await Promise.all([deleteObject(photoRef), deleteDoc(doc(db, "users", user.uid)), deleteUser(user)])
+            // await Promise.all([deleteObject(photoRef), deleteDoc(doc(db, "users", user.uid)), deleteUser(user)])
+            await deleteDoc(doc(db, "users", user.uid)).then(() => { 
+            console.log("Doc deleted");
+            }).catch((error) => {
+                console.log(error)
+            })
+
+            await deleteFolder()
+            // await deleteObject(photoRef).then(() => {
+            //     console.log("Image deleted");
+            // }).catch((error) => {
+            //     console.log(error)
+            // })
+
+            await deleteUser(user).then(() => {
+                console.log("User & doc deleted");
+                navigate('/chatapp/register')
+            }).catch((error) => {
+                console.log(error);
+            });
             setError("")
             navigate('/chatapp/register')    
         } catch (error) {

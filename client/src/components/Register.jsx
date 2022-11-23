@@ -41,7 +41,7 @@ const Register = () => {
             // User signed up (created user)
             // Create a unique image name
             const date = new Date().getTime()
-            const storageRef = ref(storage, `${displayName + date}`);
+            const storageRef = ref(storage, `images/${res.user.uid}/${displayName + date}`);
 
             // Register three observers:
             // 1. 'state_changed' observer, called any time the state changes
