@@ -10,6 +10,9 @@ module.exports = {
         lightWhite: '#fafafa',
         materialBlack: '#121212',
         dcBlue: '#7289da'
+      },
+      gridTemplateRows: {
+        'chatLayout': '200px 1fr 200px'
       }
     },
   },

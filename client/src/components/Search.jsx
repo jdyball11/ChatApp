@@ -8,8 +8,8 @@ import { ChatContext } from "../contexts/ChatContext";
 
 const Search = () => {
     // the search term
-    const [username, SetUsername] = useState("")
-    const [user, SetUser] = useState(null)
+    const [username, setUsername] = useState("")
+    const [user, setUser] = useState(null)
     const [error, setError] = useState(false)
     const { currentUser } = useContext(AuthContext)
     const { dispatch, ACTION } = useContext(ChatContext)
@@ -23,7 +23,7 @@ const Search = () => {
             // setUser to to be the doc that is returned by getDocs from the q query
             const querySnapshot = await getDocs(q)
             querySnapshot.forEach((doc) => {
-                SetUser(doc.data())
+                setUser(doc.data())
             });
         } catch (error) {
             console.log("no data from search", error.message)
@@ -37,7 +37,6 @@ const Search = () => {
 
     const handleSelect = async () => {
         // check whether the chats in firestore db exist, if not create a new chat
-
         const combinedId = currentUser.uid > user.uid ? currentUser.uid + user.uid : user.uid + currentUser.uid
         try {
             const res = await getDoc(doc(db, "chats", combinedId))
@@ -54,7 +53,7 @@ const Search = () => {
                         photoURL: user.photoURL
                     },
                     [combinedId + ".date"]: serverTimestamp()
-                })                    
+                })
                 await updateDoc(doc(db, "userChats", user.uid), {
                     //  do the same for the other user in the chat
                     [combinedId + ".userInfo"]: {
@@ -69,6 +68,8 @@ const Search = () => {
         } catch (error) {
             console.log("error msg:", error.message)
         }
+        setUsername("")
+        setUser(null)
     }
 
     return (
@@ -80,16 +81,14 @@ const Search = () => {
                     <input className="bg-transparent b-none text-black outline-0 p-1" type="text"
                         placeholder="Search Friend"
                         onKeyDown={handleEnter}
-                        onChange={event => SetUsername(event.target.value)}
+                        onChange={event => setUsername(event.target.value)}
                         value={username} />
                 </div>
-                
-                    
-                    {/* userChat */}
-                    {error && <span>User not found</span>}
-                    {user && <div onClick={handleSelect} className="flex items-center p-3 gap-3 cursor-pointer">
-                        <img className="w-16 aspect-square object-cover rounded-full" src={user.photoURL} />
-                        {/* userChat.info */}
+                {/* userChat */}
+                {error && <span>User not found</span>}
+                {user && <div onClick={handleSelect} className="flex items-center p-3 gap-3 cursor-pointer">
+                    <img className="w-16 aspect-square object-cover rounded-full" src={user.photoURL} />
+                    {/* userChat.info */}
                     <div>
                         <span className=" text-dcBlue text-2xl font-bold">{user.displayName}</span>
                     </div>
