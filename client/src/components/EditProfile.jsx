@@ -4,6 +4,8 @@ import { MdOutlineAddPhotoAlternate } from "react-icons/md"
 import { FaRocketchat } from 'react-icons/fa'
 import { MdLogout } from 'react-icons/md'
 
+import { onAuthStateChanged } from "firebase/auth";
+
 import { updateProfile } from "firebase/auth";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage, db, auth } from "../Firebase-config"
@@ -18,7 +20,7 @@ const EditProfile = () => {
     const [error, setError] = useState(false)
     const [chars, setChars] = useState(150)
     const currentUserColRef = useRef()
-    const {currentUser} = useContext(AuthContext)
+    const {currentUser, setCurrentUser} = useContext(AuthContext)
     
     const navigate = useNavigate()
 
@@ -91,7 +93,7 @@ const EditProfile = () => {
             file = event.target[0].files[0]
             console.log("Image file: ", event.target[0].files[0])
             try {
-                const storageRef = ref(storage, currentUser.uid);
+                const storageRef = ref(storage, `images/${currentUser.uid}/${displayName}`);
                 const uploadTask = uploadBytesResumable(storageRef, file);
     
                 uploadTask.on(
@@ -111,6 +113,12 @@ const EditProfile = () => {
                                 "about": about,
                                 "displayName": displayName,
                                 "photoURL": downloadURL
+                            })
+                            setCurrentUser({
+                                ...currentUser,
+                                displayName,
+                                about,
+                                photoURL: downloadURL
                             })
                             console.log("Doc Updated");
                         })

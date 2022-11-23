@@ -21,7 +21,7 @@ export const AuthContextProvider = ({ children }) => {
     
     return (
         //passing logged in user: currentUser down to all routes(children) within authcontext provider
-        <AuthContext.Provider value={{currentUser}}>
+        <AuthContext.Provider value={{currentUser, setCurrentUser}}>
             {children}
         </AuthContext.Provider>
     )

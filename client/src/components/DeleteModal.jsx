@@ -8,9 +8,9 @@ import { db, auth, storage } from "../Firebase-config"
 
 import { AuthContext } from "../contexts/AuthContext";
 
-
 const DeleteModal = ({visible, onClose}) => {
     const [error, setError] = useState("")
+    const [needAuth, setNeedAuth] = useState(false)
     const navigate = useNavigate()
     
     const user = useContext(AuthContext).currentUser
@@ -38,33 +38,38 @@ const DeleteModal = ({visible, onClose}) => {
         return result
     }
 
-    const handleDeleteAccount = async () => {
-        // reauthentication
+    const handleAuthConfirmSubmit = (event) => {
+        event.preventDefault()
+        console.log();
         const reauthenticate = async () => {
             try {
                 const auth = getAuth();
-                console.log("try block - auth: ", auth)
+                // console.log("try block - auth: ", auth)
                 const user = auth.currentUser;
-                console.log("try block - currentuser: ", user)
+                // console.log("try block - currentuser: ", user)
 
                 const email = user.email
-                const password = "123456"
 
                 const credential = await EmailAuthProvider.credential(
                     email,
-                    password
+                    event.target.authPassword.value
                 );
                 console.log("try block - credential", credential)
                 await reauthenticateWithCredential(user, credential);
                 console.log("successfully reauthenticated");
+                setNeedAuth(false)
                 return true
             } catch (e) {
                 console.log("Credential: ",e);
+                setNeedAuth(true)
                 return null
             }
         }
-        const authRes = reauthenticate()
-        console.log("authres: ", await authRes)
+        reauthenticate()
+    }
+
+    const handleDeleteAccount = async () => {
+        // grab the user.uid and check against chats' id, if deactivate then isActive= false
 
         try {
             // await Promise.all([deleteObject(photoRef), deleteDoc(doc(db, "users", user.uid)), deleteUser(user)])
@@ -75,11 +80,6 @@ const DeleteModal = ({visible, onClose}) => {
             })
 
             await deleteFolder()
-            // await deleteObject(photoRef).then(() => {
-            //     console.log("Image deleted");
-            // }).catch((error) => {
-            //     console.log(error)
-            // })
 
             await deleteUser(user).then(() => {
                 console.log("User & doc deleted");
@@ -90,6 +90,7 @@ const DeleteModal = ({visible, onClose}) => {
             setError("")
             navigate('/chatapp/register')    
         } catch (error) {
+            setNeedAuth(true)
             console.log("Delete Account Error: ", error.message)
             console.log(typeof(error.message))
             setError(String(error.message))
@@ -125,7 +126,18 @@ const DeleteModal = ({visible, onClose}) => {
 
                                 </div>
                             </div>
-                            
+                            {/* Styling TODO */}
+                            {needAuth && 
+                                <form onSubmit={handleAuthConfirmSubmit}>
+                                    <label htmlFor="auth-password">Please enter your password to confirm:</label>
+                                    <input 
+                                        type="password" 
+                                        id="auth-password"
+                                        name="authPassword"
+                                         />
+                                    <button type="submit">Confirm</button>
+                                </form>
+                            }
                             <div className="px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                                 <button 
                                 type="button" onClick={handleDeleteAccount} 
