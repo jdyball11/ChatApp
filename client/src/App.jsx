@@ -33,15 +33,20 @@ function App() {
               <Route path='home' element={<ProtectedRoute>
                 <Home />
               </ProtectedRoute>} />
-              {/* protected: user profile page */}
+              {/* protected: editing user profile page */}
               <Route path='profile' element={<ProtectedRoute>
                 <EditProfile />
               </ProtectedRoute>} />
+              {/* protected: user profile page */}
+              <Route path='userprofile' element={<ProtectedRoute>
+                <UserProfile />
+              </ProtectedRoute>} /> 
               {/* register page */}
               <Route path='register' element={<Register />} />
               {/* login page */}
-              <Route path='login' element={<Login />} />            
-              <Route path='userprofile' element={<UserProfile />} />          
+              <Route path='login' element={<Login />} />  
+              
+              {/* DELETE!!! For testing only */}
               <Route path='testing' element={<ForTesting />} />          
             </Route>
           </Routes>
