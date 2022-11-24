@@ -55,6 +55,7 @@ const Login = () => {
                     <FaRocketchat />ChatApp
                     <Switcher />
                 </div>
+                
                 {/* Main login section */}
                 <div className="flex flex-col gap-6 justify-center items-center rounded-lg
                 mx-3 p-6 bg-lightWhite filter shadow-md shadow-gray-500 text-dcBlue dark:text-white dark:bg-gray-900 dark:shadow-darkRounded">
