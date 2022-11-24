@@ -26,7 +26,7 @@ const Contacts = ({handleSidebarShow}) => {
 
     return (
         // chats
-        <div className='overflow-auto bg-dcBlue w-full flex-col'>
+        <div className='overflow-auto bg-dcBlue w-full flex-col dark:bg-gray-900'>
             {/* Object.entries(obj) return the key, value pair of the object as key: value in an array */}
             {/* also, need to make sure chats is available before running the sort and map */}
             {chats && Object.entries(chats)?.sort((a, b) => b[1].date - a[1].date).map((chat) => (

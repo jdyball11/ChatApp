@@ -78,7 +78,7 @@ const Search = () => {
 
         <div className="border-b-2 text-lightWhite">
             {/* the search form */}
-            <div className=" bg-dcBlue">
+            <div className=" bg-dcBlue dark:bg-gray-900">
                 <div className="p-2 text-lightWhite">
                     <input className="bg-transparent text-lightWhite outline-0 p-1 placeholder:text-lightWhite" type="text"
                         placeholder="Search Friend"

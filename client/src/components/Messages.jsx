@@ -28,7 +28,7 @@ const Messages = () => {
 
     return (
         // the messages
-        <div className='flex flex-col gap-5 p-3 overflow-y-scroll overflow-x-hidden h-full'>
+        <div className='flex flex-col gap-5 p-3 overflow-y-scroll overflow-x-hidden h-full dark:bg-gradient-to-r from-gray-700 via-slate-600 to-gray-600'>
             {messages.map((message) => (
                 <Message message={message} key={message.id} />
             ))}

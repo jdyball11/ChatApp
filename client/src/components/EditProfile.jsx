@@ -10,6 +10,7 @@ import { storage, db, auth } from "../Firebase-config"
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 import { AuthContext } from "../contexts/AuthContext";
+import Switcher from "./Switcher"
 
 // import Navbar from "./Navbar"
 
@@ -144,17 +145,20 @@ const EditProfile = () => {
     }
 
     return (
-        <div className="flex flex-col gap-12 bg-dcBlue h-screen">
+        <div className="flex flex-col gap-12 h-screen bg-dcBlue dark:bg-gray-900">
             {/* Navbar */}
             <div className="flex flex-row items-center justify-between gap-3 text-lightWhite font-bold p-4">
+                {/* Brand */}
                 <div className='flex gap-2 items-center font-bold text-3xl'>
                     <Link to="/chatapp/home"><FaRocketchat /></Link>
                 </div>
-                <div className='flex gap-2 items-center text-xl'>
+                {/* User */}
+                <div className='flex gap-2 items-center text-md'>
                     <Link to="/chatapp/userprofile" className="flex items-center">
                         <img src={currentUser?.photoURL} alt="profile picture" className='w-9 h-9 object-cover rounded-full mr-2'/>
                         <span>{currentUser?.displayName}</span>
                     </Link>
+                    <Switcher />
                     <MdLogout onClick={handleClickSignOut}/>
                 </div>
             </div>
@@ -162,11 +166,11 @@ const EditProfile = () => {
             {/* Body/Content */}
             <div className="flex justify-center items-center">
             <div 
-            className="flex flex-col gap-6 justify-center items-center rounded-lg mx-3 p-8 bg-lightWhite filter shadow-2xl shadow-gray-500 w-80">
-                <div className="text-3xl font-black text-dcBlue">
+            className="flex flex-col gap-6 justify-center items-center rounded-lg mx-3 p-8 bg-lightWhite filter shadow-2xl shadow-gray-500 w-80 dark:text-white dark:bg-gray-900 dark:shadow-darkRounded">
+                <div className="text-3xl font-black">
                     Edit Profile
-                    <div className="text-base font-normal text-center mt-1 text-dcBlue">
-                        ...
+                    <div className="text-base font-normal text-center mt-1">
+                        .....
                     </div>
                 </div>
 
@@ -176,10 +180,10 @@ const EditProfile = () => {
                         name="profilePic" 
                         onChange={handleSelectImage}
                     />
-                    <label htmlFor="file" className={`text-sm flex flex-row gap-3 items-center justify-center ${imageSelected ? "text-blue-900" : "text-dcBlue"}`} >
+                    <label htmlFor="file" className={`text-sm flex flex-row gap-3 items-center justify-center p-3 ${imageSelected ? "text-blue-900 rounded-lg border dark:text-dcBlue dark:border-none dark:shadow-lightRounded" : "text-dcBlue"}`} >
                         <MdOutlineAddPhotoAlternate className="text-4xl" />
                         {/* <img src={editFields.photoURL} alt="" /> */}
-                        {imageSelected ? "New Profile Picture is Ready to be Uploaded" : "Upload a New Profile Picture" }
+                        <span className="">{imageSelected ? "New Profile Picture Ready" : "Upload a New Profile Picture" }</span>
                     </label>
                     
                     <input 

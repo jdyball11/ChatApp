@@ -1,7 +1,6 @@
 import Navbar from "./components/Navbar"
 import Login from "./components/Login"
 import Register from "./components/Register"
-import ForTesting from "./components/ForTesting"
 import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom'
 import { useContext } from "react"
 import Home from "./components/Home"
@@ -45,9 +44,7 @@ function App() {
               <Route path='register' element={<Register />} />
               {/* login page */}
               <Route path='login' element={<Login />} />  
-              
-              {/* DELETE!!! For testing only */}
-              <Route path='testing' element={<ForTesting />} />          
+                       
             </Route>
           </Routes>
         </BrowserRouter>

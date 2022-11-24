@@ -13,7 +13,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 const Input = () => {
     const [text, setText] = useState("")
     const [img, setImg] = useState(null)
-    const [chatActive, setChatActive] = useState(false)
+    const [chatActive, setChatActive] = useState(true)
 
     const { currentUser } = useContext(AuthContext)
     const { data } = useContext(ChatContext)
@@ -94,7 +94,7 @@ const Input = () => {
     }
 
     return (
-        <div className='flex text-xl items-center gap-3 border-t-2 p-2'>
+        <div className='flex text-xl items-center gap-3 border-t-2 p-2 dark:bg-gray-900'>
             <input disabled={!chatActive} type="file" id="file" onChange={event => setImg(event.target.files[0])}
                 className="hidden" />
             <label htmlFor='file' className=''><FaPlus className='bg-dcBlue text-[#fafafa] p-1 rounded-full w-6 h-6' /></label>
@@ -103,7 +103,7 @@ const Input = () => {
             <input disabled={!chatActive} type="text" onKeyDown={handleEnter}
                 placeholder={data.user.displayName && 'Message ' + data.user.displayName}
                 onChange={event => setText(event.target.value)} value={text}
-                className="flex-grow p-2 bg-[#fafafa]" />
+                className="flex-grow p-2 bg-[#fafafa] dark:bg-gray-900 dark:text-white" />
             {/* Send button */}
             {chatActive && <MdSend onClick={handleSend} />}
 
