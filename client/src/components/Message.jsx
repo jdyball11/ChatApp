@@ -9,8 +9,6 @@ const Message = ({ message }) => {
     const { data } = useContext(ChatContext)
     // console.log(message)
     const [imgSrc, setImgSrc] = useState(data.user.photoURL);
-    // console.log("data.user.photoURL", data.user.photoURL)
-    // console.log("imgSrc", imgSrc)
 
     useEffect(() => {
         setImgSrc(data.user.photoURL)
@@ -20,8 +18,10 @@ const Message = ({ message }) => {
 
     const ref = useRef()
 
-    
-    
+    useEffect(() => {
+        ref.current?.scrollIntoView({ behavior: "smooth"})
+    }, [message])
+
     const convertDate = (time) => {
         let dateInMillis = time * 1000
         let date = new Date(dateInMillis)
@@ -35,7 +35,7 @@ const Message = ({ message }) => {
     const messageTime = convertDate(message.date.seconds)
 
     return (
-        <>
+        <div ref={ref}>
             {message.senderId === currentUser.uid && <div className='border-dcBlue flex justify-end gap-3'>
                 {/* profile picture */}
                 <div className='flex flex-col'>
@@ -48,8 +48,8 @@ const Message = ({ message }) => {
                         <div className='font-bold'>{currentUser.displayName}</div>
                         <div>{messageTime}</div>
                     </div>
-                    <div className='bg-dcBlue py-2 px-3 text-white rounded-xl flex flex-wrap break-all
-                    max-w-xs'>{message.text}</div>
+                    {message.text && <div className='bg-dcBlue py-2 px-3 text-white rounded-xl flex flex-wrap break-all
+                    max-w-xs'>{message.text}</div>}
                     {message.img && <img src={message.img} className="max-w-xs"/>}
                 </div>
 
@@ -73,7 +73,7 @@ const Message = ({ message }) => {
 
 
             </div>}
-        </>
+        </div>
     )
 }
 

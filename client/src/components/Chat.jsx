@@ -38,7 +38,7 @@ const Chat = ({ handleSetSideBar }) => {
             <FaRocketchat className='absolute text-lightWhite text-3xl translate-x-4 translate-y-5 peer' onClick={()=>setSidebarShow(true)} />
             {/* mobile sidebar */}
             <div id="mobileSidebar" className={`h-screen ${!sidebarShow && 'hidden'} fixed w-[300px] bg-dcBlue 
-            grid-rows-sideBarLayout transition-all
+            grid-rows-sideBarLayout transition-all overflow-y-scroll
         sm:hidden`}>
                 <Navbar handleSidebarShow={handleSidebarShow}/>
                 <Search />
