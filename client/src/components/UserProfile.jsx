@@ -79,7 +79,7 @@ const UserProfile = () => {
                     <div className="flex flex-col items-start gap-y-2 text-dcBlue text-md font-bold mt-2">
                         <p>Display Name: {currentUser?.displayName}</p>
                         <p>Email Address: {currentUser?.email}</p>
-                        <p className="max-w-sm">About: "{userAbout ? userAbout : "..."}"</p>
+                        {userAbout ? <p className="max-w-sm">About: {userAbout}</p> : <p className="max-w-sm">About: <span className="text-slate-300 dark:text-slate-700"><em>about yourself...</em></span></p>}
                     </div>
                     <div className="flex justify-end">
                         <button 
