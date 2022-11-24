@@ -14,7 +14,6 @@ const Navbar = ({handleSidebarShow}) => {
     const HandleSignOut = async () => {
         try {
             await remove(ref(RealTimeDB, "OnlineStatus/" + currentUser.uid))
-            // onDisconnect(ref(RealTimeDB, "OnlineStatus/" + user.uid)).remove()
             signOut(auth)
         } catch (error) {
             console.log(error.message)
