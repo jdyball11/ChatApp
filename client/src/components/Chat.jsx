@@ -46,7 +46,7 @@ const Chat = ({ handleSetSideBar }) => {
             </div>
             {/* Chat Info */}
             <div className='text-white p-4 bg-dcBlue 
-            flex items-center justify-start gap-3 text-xl font-bold col-starts-2 col-span-1 '>
+            flex items-center justify-start gap-3 text-xl font-bold col-starts-2 col-span-1 dark:bg-gray-900'>
                 <div className="flex w-full gap-5 items-center justify-end">
                     {/* navicon */}
                     {/* <div>

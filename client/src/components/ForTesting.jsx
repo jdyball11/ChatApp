@@ -1,95 +1,50 @@
-import { AuthContext } from "../contexts/AuthContext";
-import { useNavigate } from "react-router-dom"
-import { useState, useContext } from "react"
-import { doc, collection, getDocs, updateDoc, query, where } from "firebase/firestore";
-import { ref, deleteObject, listAll } from "firebase/storage";
-import { getAuth, deleteUser, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
-import { db, auth, storage } from "../Firebase-config"
+// URL - /chatapp/testing
+import React from 'react'
 
 const ForTesting = () => {
-    const user = useContext(AuthContext).currentUser
-    console.log("LOGIN USER: ", user)
-    console.log("UID: ", user.uid)
-    // e53JcBEYNlVWkmuaKb2KIjdZv7q1
-    const chatsIdList = []
-    const testingQuery = async () => {
-        const q = query(collection(db, "chats"), where("participants", "array-contains", user.uid));
-        const querySnapshot = await getDocs(q)
-        querySnapshot.forEach((doc) => {
-            chatsIdList.push(doc.id)
-        });
+    const [darkToggle, setDarkToggle] = React.useState(false)
 
-        console.log(chatsIdList)
-        chatsIdList.forEach(async (chatId) => {
-            let chatDocRef = doc(db, "chats", chatId)
-            await updateDoc(chatDocRef, {
-                isActive: false
-            })
-        })
-    };
-    testingQuery()
-    
-    return <p>Something test</p>
+    return (
+        <div
+        class={`h-screen w-full flex items-center justify-center bg-gray-300 flex-col ${
+            darkToggle && 'dark'
+        }`}
+        >
+        <label class="toggleDarkBtn">
+            <input type="checkbox" onClick={() => setDarkToggle(!darkToggle)} />
+            <span class="slideBtnTg round"></span>
+        </label>
+        <div class="max-w-sm rounded overflow-hidden bg-gray-100 p-5 rounded-lg mt-4 text-white dark:bg-gray-900">
+            <img
+            class="w-full"
+            src="https://v1.tailwindcss.com/img/card-top.jpg"
+            alt="Sunset in the mountains"
+            />
+            <div class="px-6 py-4">
+            <div class="text-gray-800 dark:text-gray-200 font-bold text-xl mb-2">
+                The Coldest Sunset
+            </div>
+            <p class="text-gray-800 dark:text-gray-200">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Voluptatibus quia, nulla! Maiores et perferendis eaque,
+                exercitationem praesentium nihil.
+            </p>
+            </div>
+            <div class="px-6 pt-4 pb-2">
+            <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                #photography
+            </span>
+            <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                #travel
+            </span>
+            <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                #winter
+            </span>
+            </div>
+        </div>
+        </div>
+    )
 }
 
-export default ForTesting
+export default ForTesting 
 
-// import { AuthContext } from "../contexts/AuthContext";
-// import { useNavigate } from "react-router-dom"
-// import { useState, useContext, useRef } from "react"
-
-// import { doc, getDoc, collection, getDocs, deleteDoc, updateDoc } from "firebase/firestore";
-// import { query, where } from "firebase/firestore";
-// import { ref, deleteObject, listAll } from "firebase/storage";
-// import { getAuth, deleteUser, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
-// import { db, auth, storage } from "../Firebase-config"
-// import { useEffect } from "react";
-
-// const ForTesting = () => {
-    // const currentUserColRef = useRef("ab")
-    // const user = useContext(AuthContext).currentUser
-    // console.log("LOGIN USER: ", user)
-    // console.log("UID: ",user.uid)
-
-    // // e53JcBEYNlVWkmuaKb2KIjdZv7q1
-    // const testingQuery = async () => {
-    //     const q = query(collection(db, "chats"), where("participants", "array-contains", user.uid));
-
-    //     const querySnapshot = await getDocs(q);
-    //     // console.log(querySnapshot)
-    //     // console.log(typeof querySnapshot)
-
-    //     querySnapshot.forEach((doc) => {
-    //         console.log(doc.id, " => ", doc.data());
-    //         currentUserColRef.current = doc.id
-    //         console.log(currentUserColRef);
-    //         console.log(currentUserColRef.current);
-    //     })
-
-    //     // querySnapshot.forEach( (doc) => {
-    //     // // doc.data() is never undefined for query doc snapshots
-    //     //     console.log(doc.id, " => ", doc.data());
-    //     //     let a = doc.id
-    //     //     updateDoc((db, "chats", a), {
-    //     //     isActive: false
-    //     //     })
-    //     // });
-
-    //     // const testRef = doc(db, "chats", "e53JcBEYNlVWkmuaKb2KIjdZv7q13GNcIy4yk4fYSv5f5CujxEvhWMF2")
-    //     // const testSnap = await getDoc(testRef)
-    //     // console.log(testSnap.data())
-    // }
-    // testingQuery()
-
-    // useEffect(() => {
-    //     const abc = async() =>{
-    //         if (currentUserColRef.current !== "ab") {
-    //         let a = doc(db, "chats", currentUserColRef.current)
-    //             await updateDoc(a, {
-    //                 isActive: false
-    //             })
-    //         }
-    //     }
-    //     // console.log("I assume done....?");
-    //     abc()
-    // }, [currentUserColRef.current])

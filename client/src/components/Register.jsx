@@ -7,6 +7,7 @@ import { db } from '../Firebase-config'
 import { useNavigate, Link } from "react-router-dom";
 import { FaRocketchat } from "react-icons/fa"
 import { MdOutlineAddPhotoAlternate } from "react-icons/md"
+import Switcher from "./Switcher"
 
 const Register = () => {
     const [error, setError] = useState(false)
@@ -107,15 +108,16 @@ const Register = () => {
                 <section id="register">
 
                     {/* Flex container */}
-                    <div className="flex flex-col gap-12 bg-dcBlue h-screen">
+                    <div className="flex flex-col gap-12 bg-dcBlue h-screen dark:bg-gray-900">
                         {/* Header */}
                         <div className="flex items-center gap-3 text-lightWhite text-3xl font-bold p-6 ">
                             <FaRocketchat />ChatApp
+                            <Switcher />
                         </div>
                         {/* Main login section */}
                         <div className="flex flex-col gap-6 justify-center items-center rounded-lg
-                mx-3 p-6 bg-lightWhite filter shadow-2xl shadow-gray-500">
-                            <div className="text-3xl font-black text-dcBlue">
+                mx-3 p-6 bg-lightWhite filter shadow-2xl shadow-gray-500 dark:text-white dark:bg-gray-900 dark:shadow-darkRounded">
+                            <div className="text-3xl font-black text-dcBlue dark:text-white">
                                 Create an account
                                 <div className="text-base font-normal text-center mt-1 text-dcBlue">
                                     Register
@@ -140,7 +142,7 @@ const Register = () => {
                                 {/* <input type="text" name="confirmPassword" value={registerFields.confirmPassword} onChange={handleRegisterChange} placeholder=" confirm password *"
                                 className="border-b p-2 mt-1 bg-lightWhite text-materialBlack" /> */}
                                 <input type="file" name="profilePic" id="file" className="hidden" onChange={handleSelectImage} />
-                                <label htmlFor="file" className={`${imageSelected ? "text-blue-900" : "text-dcBlue"} flex flex-row gap-3 items-center justify-center`}>
+                                <label htmlFor="file" className={`p-1 ${imageSelected ? "text-blue-900 rounded-lg border dark:text-dcBlue dark:border-none dark:shadow-lightRounded" : "text-dcBlue"} flex flex-row gap-3 items-center justify-center`}>
                                     <MdOutlineAddPhotoAlternate className="text-4xl" />
                                     <span className="translate-y-0.5">{imageSelected ? "Profile Picture Ready" : "Upload a Profile Picture" }</span>
                                    
@@ -156,7 +158,7 @@ const Register = () => {
                                         <Link to="/chatapp/login" className="underline text-dcBlue">Already have an account?</Link>
                                     </div>
                                 </label>
-                                {error && <span>Registration unsuccessful</span>}
+                                {/* {error && <span>Registration unsuccessful</span>} */}
                             </form>
 
                         </div>

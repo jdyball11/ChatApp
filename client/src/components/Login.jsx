@@ -4,6 +4,7 @@ import { auth } from "../Firebase-config"
 import { getAuth } from "firebase/auth"
 import { FaRocketchat } from "react-icons/fa"
 import { useNavigate, Link } from "react-router-dom"
+import Switcher from "./Switcher"
 
 const Login = () => {
     const initialState = {
@@ -48,15 +49,16 @@ const Login = () => {
     return (
         <section id='login'>
             {/* Flex container */}
-            <div className="flex flex-col gap-12 bg-dcBlue h-screen">
+            <div className="flex flex-col gap-12 bg-dcBlue h-screen dark:bg-gray-900">
                 {/* Header */}
                 <div className="flex items-center gap-3 text-lightWhite text-3xl font-bold p-6 ">
                     <FaRocketchat />ChatApp
+                    <Switcher />
                 </div>
                 {/* Main login section */}
                 <div className="flex flex-col gap-6 justify-center items-center rounded-lg
-                mx-3 p-6 bg-lightWhite filter shadow-md shadow-gray-500">
-                    <div className="text-3xl font-black text-dcBlue">
+                mx-3 p-6 bg-lightWhite filter shadow-md shadow-gray-500 text-dcBlue dark:text-white dark:bg-gray-900 dark:shadow-darkRounded">
+                    <div className="text-3xl font-black">
                         Welcome Back!
                         <div className="text-base font-normal text-center mt-1 text-dcBlue">
                             Login
@@ -78,7 +80,7 @@ const Login = () => {
                         <label className="flex flex-col mt-3">
                             <input type="submit" value="LOGIN" className="flex p-2 rounded-md 
                             justify-center transition-all bg-dcBlue text-lightWhite hover:bg-white hover:text-black" />
-                            <div className="flex gap-1 mt-3 justify-center text-gray-500">
+                            <div className="flex gap-1 mt-3 justify-center text-gray-500 dark:text-white">
                                 New to us? <Link to="/chatapp/register" className="underline text-dcBlue">Register</Link>
                             </div>
 
