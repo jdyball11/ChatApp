@@ -13,7 +13,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 const Input = () => {
     const [text, setText] = useState("")
     const [img, setImg] = useState(null)
-    const [chatActive, setChatActive] = useState(false)
+    const [chatActive, setChatActive] = useState(true)
 
     const { currentUser } = useContext(AuthContext)
     const { data } = useContext(ChatContext)
@@ -103,7 +103,7 @@ const Input = () => {
             <input disabled={!chatActive} type="text" onKeyDown={handleEnter}
                 placeholder={data.user.displayName && 'Message ' + data.user.displayName}
                 onChange={event => setText(event.target.value)} value={text}
-                className="flex-grow p-2 bg-[#fafafa] dark:bg-gray-900" />
+                className="flex-grow p-2 bg-[#fafafa] dark:bg-gray-900 dark:text-white" />
             {/* Send button */}
             {chatActive && <MdSend onClick={handleSend} />}
 
