@@ -101,9 +101,6 @@ const Register = () => {
             //     // ..
             // });
 
-
-
-
             return (
                 <section id="register">
 
