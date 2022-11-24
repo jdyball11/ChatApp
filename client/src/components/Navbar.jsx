@@ -5,10 +5,22 @@ import { auth } from '../Firebase-config'
 import { useContext } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
 import { Link } from "react-router-dom"
-
+import { ref, onDisconnect, remove } from "firebase/database"
+import { RealTimeDB } from "../Firebase-config"
 
 const Navbar = ({handleSidebarShow}) => {
     const { currentUser } = useContext(AuthContext)
+
+    const HandleSignOut = async () => {
+        try {
+            await remove(ref(RealTimeDB, "OnlineStatus/" + currentUser.uid))
+            // onDisconnect(ref(RealTimeDB, "OnlineStatus/" + user.uid)).remove()
+            signOut(auth)
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
     return (
         <div className="flex flex-row items-center justify-between gap-3 
         bg-blue-900 text-lightWhite p-4">
@@ -22,7 +34,7 @@ const Navbar = ({handleSidebarShow}) => {
                     <img src={currentUser.photoURL} alt="profile picture" className='w-10 h-10 object-cover rounded-full'/>
                     <span>{currentUser.displayName}</span>
                 </Link>
-                <MdLogout onClick={()=>signOut(auth)}/>
+                <MdLogout onClick={HandleSignOut}/>
             </div>
            
         </div>

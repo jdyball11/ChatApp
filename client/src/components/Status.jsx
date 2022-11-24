@@ -4,20 +4,34 @@ import { AuthContext } from "../contexts/AuthContext"
 import { db } from "../Firebase-config"
 import { doc } from "firebase/firestore"
 import { RealTimeDB } from "../Firebase-config"
+import { BsFillCircleFill } from "react-icons/bs"
 
-const Status = () => {
-    const [online, SetOnline] = useState(false)
+const Status = ({chat}) => {
+    const [online, setOnline] = useState(true)
     const currentUser = useContext(AuthContext)
+    console.log(chat.userInfo.uid)
+    useEffect(() => {
+		return onValue(ref(RealTimeDB, "OnlineStatus/" + chat.userInfo.uid), (snapshot) => {
 
-    let userDoc = doc(db, "users", currentUser?.uid)
+			if (snapshot.exists()) {
+				setOnline(true)
+			} else {
+				setOnline(false)
+			}
+		})
+    }, [online])
 
-        useEffect(() => {
 
-            return onValue(ref(db, userDoc), (snapshot) => {
-                console.log("status", snapshot.exists())
-            })
-        }, [])
+    return (
+        <div>
+           <div className={`${online ? "text-green-400" : "text-neutral-400"} `}>
+           <BsFillCircleFill />
+           </div>
+        </div>
+    )
 }
+
+
 
 export default Status
 
