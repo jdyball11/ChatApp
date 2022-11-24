@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom"
 import { useState, useContext } from "react"
-
+import { RealTimeDB } from "../Firebase-config";
+import { remove } from "firebase/database";
+import { ref as ref_db } from "firebase/database"
 import { doc, getDocs, updateDoc, deleteDoc, collection, query, where } from "firebase/firestore";
 import { ref, deleteObject, listAll } from "firebase/storage";
 import { getAuth, deleteUser, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
@@ -74,10 +76,11 @@ const DeleteModal = ({visible, onClose}) => {
         const credential = EmailAuthProvider.credential(email, password);
         try {
             await reauthenticateWithCredential(user1, credential)
-            console.log("Reauthentication successfully")    
+            console.log("Reauthentication successfull")    
             setLoginError(false)
             await deleteDoc(doc(db, "users", user.uid))
             console.log("Doc deleted");
+            await remove(ref_db(RealTimeDB, "OnlineStatus/" + user.uid))
             await deleteFolder()
             await deleteUser(user)
             console.log("User deleted");

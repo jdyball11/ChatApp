@@ -13,6 +13,7 @@ export const AuthContextProvider = ({ children }) => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 set(ref(RealTimeDB, "OnlineStatus/" + user.uid), "user online")
+                onDisconnect(ref(RealTimeDB, "OnlineStatus/" + user.uid)).remove()
                 console.log("logged in reg", user)
                 setCurrentUser(user)
             } else {

@@ -9,7 +9,7 @@ import { BsFillCircleFill } from "react-icons/bs"
 const Status = ({chat}) => {
     const [online, setOnline] = useState(true)
     const currentUser = useContext(AuthContext)
-    console.log(chat.userInfo.uid)
+
     useEffect(() => {
 		return onValue(ref(RealTimeDB, "OnlineStatus/" + chat.userInfo.uid), (snapshot) => {
 
