@@ -11,10 +11,16 @@ export const AuthContextProvider = ({ children }) => {
     useEffect(() => {
         //authstatechanged will trigger the current user state once a connection with Firebase has been established.
         onAuthStateChanged(auth, (user) => {
-            // set(ref(RealTimeDB, "OnlineStatus/" + user.uid), "user online")
-            // console.log("logged in reg", user)
-            // onDisconnect(ref(RealTimeDB, "OnlineStatus/" + user.uid)).remove()
-            setCurrentUser(user)
+            if (user) {
+                set(ref(RealTimeDB, "OnlineStatus/" + user.uid), "user online")
+                console.log("logged in reg", user)
+                setCurrentUser(user)
+            } else {
+                if (currentUser !== null) {
+                    setCurrentUser(null)
+                }
+                
+            }
             
         });
     }, []);

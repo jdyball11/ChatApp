@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
 import { ChatContext } from '../contexts/ChatContext'
+import Status from './Status'
 
 const Contact = ({ chat, handleSidebarShow }) => {
     const { dispatch, ACTIONS } = useContext(ChatContext)
@@ -18,6 +19,7 @@ const Contact = ({ chat, handleSidebarShow }) => {
         dispatch({ type: ACTIONS.CHANGE_USER, payload: u })
         handleSidebarShow(false)
     }
+
     return (
         <div key={chat[0]} onClick={() => handleSelect(chat[1].userInfo)}
             className="flex items-center p-4 gap-4 w-full">
@@ -27,6 +29,7 @@ const Contact = ({ chat, handleSidebarShow }) => {
                 <div className='text-lg font-bold'>{chat[1].userInfo.displayName}</div>
                 <p>{chat[1].lastMessage?.text.slice(0, 20)}...</p>
             </div>
+            <Status chat={chat[1]} />
         </div>
     )
 }
