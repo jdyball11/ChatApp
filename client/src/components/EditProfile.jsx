@@ -3,7 +3,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md"
 import { FaRocketchat } from 'react-icons/fa'
 import { MdLogout } from 'react-icons/md'
-
+import { ref as ref_db, remove} from 'firebase/database';
+import { RealTimeDB } from '../Firebase-config';
 import { updateProfile, signOut } from "firebase/auth";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage, db, auth } from "../Firebase-config"
@@ -70,10 +71,14 @@ const EditProfile = () => {
     }
 
     // sign out button
-    const handleClickSignOut = () => {
-        signOut(auth)
-        navigate('/chatapp/login')
-    }
+    const handleClickSignOut = async () => {
+            try {
+                await remove(ref_db(RealTimeDB, "OnlineStatus/" + currentUser.uid))
+                signOut(auth)
+            } catch (error) {
+                console.log(error.message)
+            }
+        }
 
     // handle form submit
     const handleEditSubmit = async (event) => {
@@ -159,7 +164,7 @@ const EditProfile = () => {
                         <span>{currentUser?.displayName}</span>
                     </Link>
                     <Switcher />
-                    <MdLogout onClick={handleClickSignOut}/>
+                    <MdLogout onClick={handleClickSignOut} className="cursor-pointer"/>
                 </div>
             </div>
 

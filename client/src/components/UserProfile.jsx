@@ -4,10 +4,10 @@ import { signOut } from 'firebase/auth'
 import { FaRocketchat } from 'react-icons/fa'
 import { MdLogout } from 'react-icons/md'
 import { FiEdit2 } from "react-icons/fi";
-
 import { doc, getDoc } from "firebase/firestore";
 import { db, auth, storage } from "../Firebase-config"
-
+import { ref as ref_db, remove} from 'firebase/database';
+import { RealTimeDB } from '../Firebase-config';
 import { MdLogin } from 'react-icons/md';
 import { AuthContext } from "../contexts/AuthContext";
 import { async } from '@firebase/util';
@@ -40,10 +40,14 @@ const UserProfile = () => {
         setShowModal(false)
     }
 
-    const handleClickSignOut = () => {
-        signOut(auth)
-        navigate('/chatapp/login')
-    }
+    const handleClickSignOut = async () => {
+            try {
+                await remove(ref_db(RealTimeDB, "OnlineStatus/" + currentUser.uid))
+                signOut(auth)
+            } catch (error) {
+                console.log(error.message)
+            }
+        }
 
     return (
         <>

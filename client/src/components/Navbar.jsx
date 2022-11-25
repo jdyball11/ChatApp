@@ -36,7 +36,7 @@ const Navbar = ({handleSidebarShow}) => {
                     <span>{currentUser.displayName}</span>
                 </Link>
                 <Switcher />
-                <MdLogout onClick={HandleSignOut}/>
+                <MdLogout onClick={HandleSignOut} className="cursor-pointer"/>
             </div>
            
         </div>
