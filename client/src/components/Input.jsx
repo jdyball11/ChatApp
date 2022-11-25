@@ -106,7 +106,7 @@ const Input = () => {
         data.chatId && <div className='flex text-xl items-center gap-3 border-t-2 p-2 dark:bg-gray-900'>
             <input disabled={!chatActive} type="file" id="file" onChange={handleImageSelect}
                 className="hidden" />
-            <label htmlFor='file' className=''><FaPlus className={`text-[#fafafa] p-1 rounded-full w-6 h-6 ${imgSelected ? "bg-slate-600" : "bg-dcBlue"}`} /></label>
+            <label htmlFor='file' className=''><FaPlus className={`text-[#fafafa] p-1 rounded-full w-6 h-6 ${imgSelected ? "bg-slate-600" : "bg-dcBlue"}  transition-all hover:scale-125`} /></label>
 
             {/* text field for message */}
             <input disabled={!chatActive} type="text" onKeyDown={handleEnter}
@@ -114,7 +114,7 @@ const Input = () => {
                 onChange={event => setText(event.target.value)} value={text}
                 className="flex-grow p-2 bg-[#fafafa] dark:bg-gray-900 dark:text-white" />
             {/* Send button */}
-            {chatActive && <MdSend onClick={handleSend} />}
+            {chatActive && <MdSend onClick={handleSend} className="transition-all hover:scale-125"/>}
 
         </div>
     )
