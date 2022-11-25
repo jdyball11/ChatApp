@@ -22,12 +22,12 @@ const Contact = ({ chat, handleSidebarShow }) => {
 
     return (
         <div key={chat[0]} onClick={() => handleSelect(chat[1].userInfo)}
-            className="flex items-center p-4 gap-4 w-full">
+            className="grid grid-cols-[auto_1fr_16px] items-center p-4 gap-4 w-full dark:hover:bg-slate-600 hover:bg-blue-800">
             <img src={imgSrc} onError={handleError} alt="profile picture"
                 className="w-16 aspect-square object-cover rounded-full text-lightWhite" />
             <div className='text-lightWhite'>
                 <div className='text-lg font-bold'>{chat[1].userInfo.displayName}</div>
-                <p>{chat[1].lastMessage?.text.slice(0, 20)}...</p>
+                <p className='break-all'>{chat[1].lastMessage?.text.slice(0, 15)}{chat[1].lastMessage?.text.length > 15 && "..."}</p>
             </div>
             <Status chat={chat[1]} />
         </div>
