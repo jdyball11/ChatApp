@@ -60,7 +60,7 @@ const Chat = ({ handleSetSideBar }) => {
                         {data.user?.displayName}
                         {data.user.photoURL 
                             ? (<img src={imgSrc} onError={handleError} alt="profile picture" className='w-10 aspect-square object-cover rounded-lg' onClick={()=>{setShowUserDataModal(true)}} />) 
-                            : <div>Click on a user to start chatting!</div>
+                            : <div>Start chatting!</div>
                         }
                     </div>
                 </div>
