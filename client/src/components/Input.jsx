@@ -13,6 +13,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 const Input = () => {
     const [text, setText] = useState("")
     const [img, setImg] = useState(null)
+    const [imgSelected, setImgSelected] = useState(false)
     const [chatActive, setChatActive] = useState(true)
 
     const { currentUser } = useContext(AuthContext)
@@ -34,6 +35,11 @@ const Input = () => {
     }, [data.chatId]);
 
     console.log(chatActive)
+
+    const handleImageSelect = (event) => {
+        setImg(event.target.files[0])
+        setImgSelected(true)
+    }
 
     const handleSend = async () => {
         if (img) {
@@ -70,6 +76,9 @@ const Input = () => {
                 })
             })
         }
+        setText("")
+        setImg(null)
+        setImgSelected(false)
 
         await updateDoc(doc(db, "userChats", currentUser.uid), {
             [data.chatId + ".lastMessage"]: {
@@ -84,9 +93,6 @@ const Input = () => {
             },
             [data.chatId + ".date"]: serverTimestamp()
         })
-
-        setText("")
-        setImg(null)
     }
 
     const handleEnter = (e) => {
@@ -95,9 +101,9 @@ const Input = () => {
 
     return (
         <div className='flex text-xl items-center gap-3 border-t-2 p-2 dark:bg-gray-900'>
-            <input disabled={!chatActive} type="file" id="file" onChange={event => setImg(event.target.files[0])}
+            <input disabled={!chatActive || imgSelected} type="file" id="file" onChange={handleImageSelect}
                 className="hidden" />
-            <label htmlFor='file' className=''><FaPlus className='bg-dcBlue text-[#fafafa] p-1 rounded-full w-6 h-6' /></label>
+            <label htmlFor='file' className=''><FaPlus className={`bg-dcBlue text-[#fafafa] p-1 rounded-full w-6 h-6 ${imgSelected && "bg-slate-600"}`} /></label>
 
             {/* text field for message */}
             <input disabled={!chatActive} type="text" onKeyDown={handleEnter}
