@@ -134,6 +134,7 @@ const EditProfile = () => {
                             console.log("Doc Updated");
                         })
                         setError(false)
+                        setImageSelected(false)
                         navigate('/chatapp/home')
                     }
                 )
