@@ -31,6 +31,9 @@ const Input = () => {
                 unsub();
             }
         };
+        setText("")
+        setImg(null)
+        setImgSelected(false)
         data.chatId && checkActive()
     }, [data.chatId]);
 
@@ -101,7 +104,7 @@ const Input = () => {
 
     return (
         <div className='flex text-xl items-center gap-3 border-t-2 p-2 dark:bg-gray-900'>
-            <input disabled={!chatActive || imgSelected} type="file" id="file" onChange={handleImageSelect}
+            <input disabled={!chatActive} type="file" id="file" onChange={handleImageSelect}
                 className="hidden" />
             <label htmlFor='file' className=''><FaPlus className={`bg-dcBlue text-[#fafafa] p-1 rounded-full w-6 h-6 ${imgSelected && "bg-slate-600"}`} /></label>
 
