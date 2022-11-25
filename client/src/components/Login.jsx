@@ -80,12 +80,13 @@ const Login = () => {
                         {/* Create account button */}
                         <label className="flex flex-col mt-3">
                             <input type="submit" value="LOGIN" className="flex p-2 rounded-md 
-                            justify-center transition-all bg-dcBlue text-lightWhite hover:bg-white hover:text-black" />
-                            <div className="flex gap-1 mt-3 justify-center text-gray-500 dark:text-white">
-                                New to us? <Link to="/chatapp/register" className="underline text-dcBlue">Register</Link>
-                            </div>
+                            justify-center transition-all bg-dcBlue text-lightWhite hover:scale-110" />
+                            
 
                         </label>
+                        <div className="flex gap-1 justify-center text-gray-500 dark:text-white">
+                                New to us? <Link to="/chatapp/register" className="underline text-dcBlue">Register</Link>
+                            </div>
 
                     </form>
 

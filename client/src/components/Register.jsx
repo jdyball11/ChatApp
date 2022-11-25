@@ -84,84 +84,88 @@ const Register = () => {
             })
         } catch (error) {
             setError(true)
-            console.log('unsuccessful. Error Message:', error.message)}}
+            console.log('unsuccessful. Error Message:', error.message)
+        }
+    }
 
 
-            // .then((userCredential) => {
-            //     // Signed in 
-            //     const user = userCredential.user;
+    // .then((userCredential) => {
+    //     // Signed in 
+    //     const user = userCredential.user;
 
-            //     console.log(user)
-            //     // ...
-            // })
-            // .catch((error) => {
-            //     const errorCode = error.code;
-            //     const errorMessage = error.message;
-            //     console.log(error.message)
-            //     // ..
-            // });
+    //     console.log(user)
+    //     // ...
+    // })
+    // .catch((error) => {
+    //     const errorCode = error.code;
+    //     const errorMessage = error.message;
+    //     console.log(error.message)
+    //     // ..
+    // });
 
-            return (
-                <section id="register">
+    return (
+        <section id="register">
 
-                    {/* Flex container */}
-                    <div className="flex flex-col gap-12 bg-dcBlue h-screen dark:bg-gray-900">
-                        {/* Header */}
-                        <div className="flex items-center gap-3 text-lightWhite text-3xl font-bold p-6 ">
-                            <FaRocketchat />ChatApp
-                            <Switcher />
-                        </div>
-                        {/* Main login section */}
-                        <div className="flex flex-col gap-6 justify-center items-center rounded-lg
+            {/* Flex container */}
+            <div className="flex flex-col gap-12 bg-dcBlue h-screen dark:bg-gray-900">
+                {/* Header */}
+                <div className="flex items-center gap-3 text-lightWhite text-3xl font-bold p-6 ">
+                    <FaRocketchat />ChatApp
+                    <Switcher />
+                </div>
+                {/* Main login section */}
+                <div className="flex flex-col gap-6 justify-center items-center rounded-lg
                 mx-3 p-6 bg-lightWhite filter shadow-2xl shadow-gray-500 dark:text-white dark:bg-gray-900 dark:shadow-darkRounded">
-                            <div className="text-3xl font-black text-dcBlue dark:text-white">
-                                Create an account
-                                <div className="text-base font-normal text-center mt-1 text-dcBlue">
-                                    Register
-                                </div>
-                            </div>
-                            <form className="flex flex-col gap-6 w-60" onSubmit={handleRegisterSubmit}>
-                                <input type="text" name="displayName" value={registerFields.displayName} onChange={handleRegisterChange} placeholder=" display name *"
-                                    className="border-b p-2 mt-1 bg-lightWhite text-materialBlack" />
-                                <input type="text" name="email" value={registerFields.email} onChange={handleRegisterChange} placeholder=" email *"
-                                    className="border-b p-2 mt-1 bg-lightWhite text-materialBlack" />
-                                    {error &&  
-                                        <span className="text-xs p-0 text-red-500 mt-0">
-                                        Email is already existed.
-                                        </span>}
-                                <input type="password" name="password" value={registerFields.password} onChange={handleRegisterChange} placeholder=" password *"
-                                    className="border-b p-2 mt-1 bg-lightWhite text-materialBlack" />
-                                {/* Password validation */}
-                                {passwordError &&
-                                    <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
-                                        {passwordError}
-                                    </span>}
-                                {/* <input type="text" name="confirmPassword" value={registerFields.confirmPassword} onChange={handleRegisterChange} placeholder=" confirm password *"
-                                className="border-b p-2 mt-1 bg-lightWhite text-materialBlack" /> */}
-                                <input type="file" name="profilePic" id="file" className="hidden" onChange={handleSelectImage} />
-                                <label htmlFor="file" className={`p-1 ${imageSelected ? "text-blue-900 rounded-lg border dark:text-dcBlue dark:border-none dark:shadow-lightRounded" : "text-dcBlue"} flex flex-row gap-3 items-center justify-center`}>
-                                    <MdOutlineAddPhotoAlternate className="text-4xl" />
-                                    <span className="translate-y-0.5">{imageSelected ? "Profile Picture Ready" : "Upload a Profile Picture" }</span>
-                                   
-                                </label>
-
-
-                                {/* Create account button */}
-                                <label className="flex flex-col">
-                                    <input type="submit" value="CREATE ACCOUNT" className="flex rounded-md p-2 
-                            justify-center transition-all bg-dcBlue text-lightWhite" />
-
-                                    <div className="flex gap-1 justify-center mt-3">
-                                        <Link to="/chatapp/login" className="underline text-dcBlue">Already have an account?</Link>
-                                    </div>
-                                </label>
-                                {/* {error && <span>Registration unsuccessful</span>} */}
-                            </form>
-
+                    <div className="text-3xl font-black text-dcBlue dark:text-white">
+                        Create an account
+                        <div className="text-base font-normal text-center mt-1 text-dcBlue">
+                            Register
                         </div>
                     </div>
-                </section>
-            )
-        }
+                    <form className="flex flex-col gap-6 w-60" onSubmit={handleRegisterSubmit}>
+                        <input type="text" name="displayName" value={registerFields.displayName} onChange={handleRegisterChange} placeholder=" display name *"
+                            className="border-b p-2 mt-1 bg-lightWhite text-materialBlack" />
+                        <input type="text" name="email" value={registerFields.email} onChange={handleRegisterChange} placeholder=" email *"
+                            className="border-b p-2 mt-1 bg-lightWhite text-materialBlack" />
+                        {error &&
+                            <span className="text-xs p-0 text-red-500 mt-0">
+                                Email is already existed.
+                            </span>}
+                        <input type="password" name="password" value={registerFields.password} onChange={handleRegisterChange} placeholder=" password *"
+                            className="border-b p-2 mt-1 bg-lightWhite text-materialBlack" />
+                        {/* Password validation */}
+                        {passwordError &&
+                            <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
+                                {passwordError}
+                            </span>}
+                        {/* <input type="text" name="confirmPassword" value={registerFields.confirmPassword} onChange={handleRegisterChange} placeholder=" confirm password *"
+                                className="border-b p-2 mt-1 bg-lightWhite text-materialBlack" /> */}
+                        <input type="file" name="profilePic" id="file" className="hidden" onChange={handleSelectImage} />
+                        <label htmlFor="file" className={`p-1 ${imageSelected ? "text-blue-900 rounded-lg border dark:text-dcBlue dark:border-none dark:shadow-lightRounded" : "text-dcBlue"} flex flex-row gap-3 items-center justify-center`}>
+                            <MdOutlineAddPhotoAlternate className="text-4xl" />
+                            <span className="translate-y-0.5">{imageSelected ? "Profile Picture Ready" : "Upload a Profile Picture"}</span>
 
-        export default Register
+                        </label>
+
+
+                        {/* Create account button */}
+                        <label className="flex flex-col">
+                            <input type="submit" value="CREATE ACCOUNT" className="flex rounded-md p-2 
+                            justify-center transition-all bg-dcBlue text-lightWhite
+                            hover:scale-110" />
+
+
+                        </label>
+                        <div className="flex gap-1 justify-center items-start">
+                            <Link to="/chatapp/login" className="underline text-dcBlue align-top">Already have an account?</Link>
+                        </div>
+                        {/* {error && <span>Registration unsuccessful</span>} */}
+                    </form>
+
+                </div>
+            </div>
+        </section>
+    )
+}
+
+export default Register
