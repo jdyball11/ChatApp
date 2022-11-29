@@ -47,3 +47,4 @@ In the navbar, you can select your profile and navigate to your profile page whi
 Big thank you to Dido and Rod for all your help. Working through our little bugs and road blocks to get us back on track was greatly appreciated.
 
 This project was built by the dynamic and collaborative team of Jack, Adora and Gerald.
+
