@@ -27,6 +27,7 @@ function App() {
         {/* <Navbar /> */}
         <BrowserRouter>
           <Routes>
+          <Route path='/' element={<Login />} /> 
             <Route path='/chatapp/'>
               {/* protected: home page with chats */}
               <Route path='home' element={<ProtectedRoute>
@@ -43,7 +44,7 @@ function App() {
               {/* register page */}
               <Route path='register' element={<Register />} />
               {/* login page */}
-              <Route path='login' element={<Login />} />  
+               
                        
             </Route>
           </Routes>
