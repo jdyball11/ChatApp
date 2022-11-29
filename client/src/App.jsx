@@ -28,25 +28,21 @@ function App() {
         <BrowserRouter>
           <Routes>
           <Route path='/' element={<Login />} /> 
-            <Route path='/chatapp/'>
               {/* protected: home page with chats */}
-              <Route path='home' element={<ProtectedRoute>
+              <Route path='/chatapp/home' element={<ProtectedRoute>
                 <Home />
               </ProtectedRoute>} />
               {/* protected: editing user profile page */}
-              <Route path='profile' element={<ProtectedRoute>
+              <Route path='/chatapp/profile' element={<ProtectedRoute>
                 <EditProfile />
               </ProtectedRoute>} />
               {/* protected: user profile page */}
-              <Route path='userprofile' element={<ProtectedRoute>
+              <Route path='/chatapp/userprofile' element={<ProtectedRoute>
                 <UserProfile />
               </ProtectedRoute>} /> 
               {/* register page */}
-              <Route path='register' element={<Register />} />
+              <Route path='/chatapp/register' element={<Register />} />
               {/* login page */}
-               
-                       
-            </Route>
           </Routes>
         </BrowserRouter>
       </div>
