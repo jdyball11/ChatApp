@@ -12,7 +12,7 @@ const DataUserProfileModal = ({visible, onClose, data}) => {
 
     const handleClickSignOut = () => {
         signOut(auth)
-        navigate('/chatapp/login')
+        navigate('/')
     }
 
     return (

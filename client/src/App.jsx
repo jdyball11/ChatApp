@@ -16,7 +16,7 @@ function App() {
   // redirects user to login page if not logged in
   const ProtectedRoute = ({ children }) => {
     if (!currentUser) {
-      return <Navigate to="/chatapp/login" />
+      return <Navigate to="/" />
     }
     return children
   }

@@ -157,7 +157,7 @@ const Register = () => {
 
                         </label>
                         <div className="flex gap-1 justify-center items-start">
-                            <Link to="/chatapp/login" className="underline text-dcBlue align-top">Already have an account?</Link>
+                            <Link to="/" className="underline text-dcBlue align-top">Already have an account?</Link>
                         </div>
                         {/* {error && <span>Registration unsuccessful</span>} */}
                     </form>
